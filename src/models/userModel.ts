@@ -1,18 +1,15 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IUser extends Document {
-    nombre: string;
-    apellido: string;
+    name: string;
     password: string;
     email: string;
+    created_at?: Date;
+    role: 'paciente' | 'profesional';
 }
 
 const userSchema = new Schema<IUser>({
-    nombre: {
-        type: String,
-        required: true
-    },
-    apellido: {
+    name: {
         type: String,
         required: true
     },
@@ -25,22 +22,19 @@ const userSchema = new Schema<IUser>({
         required: true,
         unique: true,
         match: [/\S+@\S+\.\S+/, 'Email inválido']
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ['paciente', 'profesional'],
+        default: 'paciente'
     }
 });
 
 const Usuario = mongoose.model<IUser>('Usuario', userSchema);
 
 export default Usuario;
-
-/* 
-    NOTA: Si se necesitan más campos en el futuro, se pueden agregar
-    aquí. Ejemplo:
-    
-    edad: {
-        type: Number,
-        min: 0
-    },
-    altura: {
-        type: Number
-    }
-*/
