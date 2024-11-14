@@ -21,5 +21,29 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         res.status(500).json({ message: 'Error al iniciar sesión', error });
     }
 };
+// PENDIENTE AGREGAR SEGURIDAD AL PASSOWRD (HASH)
 
-// Pendiente agregar seguridad al password
+export const registerUser = async (req: Request, res: Response): Promise<void> => {
+    const { name, password, email, role } = req.body;
+
+    try {
+        const existingUser = await Usuario.findOne({ email });
+        if (existingUser) {
+            res.status(400).json({ message: 'El email ya existe' });
+            return;
+        }
+
+        const newUser = new Usuario({
+            name,
+            password,
+            email,
+            role
+        });
+
+        const savedUser = await newUser.save();
+
+        res.status(201).json({ message: 'Usuario registrado', user: savedUser });
+    } catch (error) {
+        res.status(500).json({ message: 'Error al registrar el usuario', error });
+    }
+};
