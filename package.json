@@ -4,18 +4,21 @@
     "private": true,
     "scripts": {
         "build": "npx tsc",
-        "start": "node dist/index.js",
-        "dev": "nodemon src/index.ts"
+        "start": "nodemon index.ts"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
+        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
-        "mongoose": "^8.8.1"
+        "mongoose": "^8.8.1",
+        "morgan": "^1.10.0"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",
+        "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
+        "@types/morgan": "^1.9.9",
         "@types/node": "^22.5.4",
         "nodemon": "^3.1.4",
         "ts-node": "^10.9.2",
