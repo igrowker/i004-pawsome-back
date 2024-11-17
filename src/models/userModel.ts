@@ -5,7 +5,9 @@ interface IUser extends Document {
     password: string;
     email: string;
     created_at?: Date;
-    role: 'paciente' | 'profesional';
+    role: 'user' | 'refugee' | 'admin';
+    isActive: boolean;
+    isVolunteer: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -30,10 +32,20 @@ const userSchema = new Schema<IUser>({
     role: {
         type: String,
         required: true,
-        enum: ['paciente', 'profesional'],
-        default: 'paciente'
+        enum: ['user', 'refugee', 'admin'],
+        default: 'user'
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    isVolunteer: {
+        type: Boolean,
+        default: false
     }
 });
+
 
 const Usuario = mongoose.model<IUser>('Usuario', userSchema);
 
