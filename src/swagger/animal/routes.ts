@@ -198,3 +198,71 @@
  *                   type: string
  *                   example: "Error al actualizar el animal"
  */
+
+/**
+ * @swagger
+ * /animals:
+ *   post:
+ *     tags:
+ *       - Animals
+ *     summary: Crear un nuevo animal
+ *     description: Esta ruta permite registrar un nuevo animal en el sistema.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del animal
+ *               age:
+ *                 type: integer
+ *                 description: Edad del animal
+ *               species:
+ *                 type: string
+ *                 description: Especie del animal
+ *               breed:
+ *                 type: string
+ *                 description: Raza del animal
+ *               health_status:
+ *                 type: string
+ *                 description: Estado de salud del animal
+ *               description:
+ *                 type: string
+ *                 description: Descripción del animal
+ *               photos:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: URL de la foto del animal
+ *               adoption_status:
+ *                 type: string
+ *                 enum:
+ *                   - disponible
+ *                   - en proceso
+ *                   - adoptado
+ *                 description: Estado de adopción del animal
+ *     responses:
+ *       201:
+ *         description: Animal creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Animal creado correctamente"
+ *       500:
+ *         description: Error al crear el animal
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al crear el animal"
+ */

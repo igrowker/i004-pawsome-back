@@ -9,6 +9,7 @@
  *         - password
  *         - email
  *         - role
+ *         - isActive
  *       properties:
  *         name:
  *           type: string
@@ -26,15 +27,26 @@
  *           description: Fecha de creación del usuario
  *         role:
  *           type: string
- *           description: Rol del usuario (paciente o profesional)
+ *           description: Rol del usuario (usuario, refugiado, administrador)
  *           enum:
- *             - paciente
- *             - profesional
- *           default: paciente
+ *             - user
+ *             - refugee
+ *             - admin
+ *           default: user
+ *         isActive:
+ *           type: boolean
+ *           description: Estado de actividad del usuario (activo o inactivo)
+ *           default: true
+ *         isVolunteer:
+ *           type: boolean
+ *           description: Indica si el usuario es voluntario
+ *           default: false
  *       example:
  *         name: Juan Pérez
  *         password: "contraseña123"
  *         email: juanperez@ejemplo.com
  *         created_at: "2024-11-17T12:34:56.789Z"
- *         role: paciente
+ *         role: user
+ *         isActive: true
+ *         isVolunteer: false
  */
