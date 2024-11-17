@@ -7,12 +7,20 @@
 
 /**
  * @swagger
- * /admin/dashboard:
+ * /admin/dashboard/{refugeId}:
  *   get:
  *     tags:
  *       - Admin
  *     summary: Obtener datos del panel de administración
- *     description: Esta ruta permite obtener información del panel de administración, como estadísticas o resúmenes clave del sistema.
+ *     description: Esta ruta permite obtener información del panel de administración, como estadísticas o resúmenes clave del sistema. El parámetro `refugeId` especifica el refugio o área para la que se obtienen los datos.
+ *     parameters:
+ *       - in: path
+ *         name: refugeId
+ *         required: true
+ *         description: ID del refugio para obtener los datos específicos de ese refugio.
+ *         schema:
+ *           type: string
+ *           example: "1234"
  *     responses:
  *       200:
  *         description: Datos del panel de administración obtenidos exitosamente
@@ -21,9 +29,9 @@
  *             schema:
  *               type: object
  *               properties:
- *                 message:
- *                   type: string
- *                   example: "Datos del panel de administración obtenidos correctamente"
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 data:
  *                   type: object
  *                   description: Información relevante del panel de administración
@@ -47,6 +55,9 @@
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
  *                 message:
  *                   type: string
  *                   example: "Error al obtener los datos del dashboard"

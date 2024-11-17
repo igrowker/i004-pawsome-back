@@ -3,6 +3,6 @@ import { getDashboard } from '../controllers/adminController'; // Asegúrate de 
 
 const adminRoutes = express.Router();
 
-adminRoutes.get('/dashboard', getDashboard);
+adminRoutes.get('/dashboard/:refugeId', getDashboard);
 
 export default adminRoutes;
