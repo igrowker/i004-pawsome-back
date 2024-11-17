@@ -17,6 +17,11 @@ export const createUserService = async (userData: { name: string; password: stri
         throw new Error('El email ya existe');
     }
 
+    const allowedRoles = ['user', 'refugee'];
+    if (!allowedRoles.includes(userData.role)) {
+        throw new Error('El rol proporcionado no es válido para el registro');
+    }
+
     const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
     userData.password = hashedPassword;
 
