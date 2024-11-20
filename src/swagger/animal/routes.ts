@@ -12,7 +12,7 @@
  *     tags:
  *       - Animals
  *     summary: Obtener una lista de todos los animales
- *     description: Esta ruta permite obtener todos los animales registrados en el sistema.
+ *     description: 
  *     responses:
  *       200:
  *         description: Lista de animales obtenida exitosamente
@@ -23,15 +23,44 @@
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
+ *                   _id:
  *                     type: string
- *                     description: ID del animal
+ *                     description: ID único del animal
+ *                     example: "6739975cabab1984320cdbed"
+ *                   refugee_id:
+ *                     type: string
+ *                     description: ID del refugio al que pertenece el animal
+ *                     example: "64d0f4c2b45302e4a7d3bc35"
  *                   name:
  *                     type: string
  *                     description: Nombre del animal
+ *                     example: "Luna"
+ *                   age:
+ *                     type: integer
+ *                     description: Edad del animal en años
+ *                     example: 2
  *                   species:
  *                     type: string
- *                     description: Especie del animal
+ *                     description: Especie del animal (e.g., Perro, Gato, Conejo)
+ *                     example: "Gato"
+ *                   breed:
+ *                     type: string
+ *                     description: Raza del animal
+ *                     example: "Siamés"
+ *                   health_status:
+ *                     type: string
+ *                     description: Estado de salud del animal
+ *                     example: "Esterilizada, sin enfermedades conocidas"
+ *                   description:
+ *                     type: string
+ *                     description: Descripción breve del animal
+ *                     example: "Gata tranquila y cariñosa. Le encanta dormir junto a la ventana."
+ *                   photos:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                     description: URLs de las fotos del animal
+ *                     example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
  *                   adoption_status:
  *                     type: string
  *                     description: Estado de adopción del animal
@@ -39,10 +68,17 @@
  *                       - disponible
  *                       - en proceso
  *                       - adoptado
+ *                     example: "en proceso"
  *                   createdAt:
  *                     type: string
  *                     format: date-time
  *                     description: Fecha de creación del registro del animal
+ *                     example: "17/11/2024 05:05"
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Última fecha de actualización del registro del animal
+ *                     example: "17/11/2024 05:05"
  *       500:
  *         description: Error al obtener la lista de animales
  *         content:
@@ -53,6 +89,9 @@
  *                 message:
  *                   type: string
  *                   example: "Error al obtener los animales"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
  */
 
 /**
@@ -61,41 +100,62 @@
  *   get:
  *     tags:
  *       - Animals
- *     summary: Obtener información de un animal específico
- *     description: Esta ruta permite obtener los detalles de un animal específico usando su ID.
+ *     summary: Obtener un animal por su ID
+ *     description: Retorna los detalles de un animal específico basado en su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del animal
+ *         description: ID único del animal a buscar
  *         schema:
  *           type: string
+ *         example: "6739975cabab1984320cdbed"
  *     responses:
  *       200:
- *         description: Datos del animal obtenidos exitosamente
+ *         description: Animal obtenido exitosamente
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 id:
+ *                 _id:
  *                   type: string
- *                   description: ID del animal
+ *                   description: ID único del animal
+ *                   example: "6739975cabab1984320cdbed"
+ *                 refugee_id:
+ *                   type: string
+ *                   description: ID del refugio al que pertenece el animal
+ *                   example: "64d0f4c2b45302e4a7d3bc35"
  *                 name:
  *                   type: string
  *                   description: Nombre del animal
+ *                   example: "Luna"
+ *                 age:
+ *                   type: integer
+ *                   description: Edad del animal en años
+ *                   example: 2
  *                 species:
  *                   type: string
- *                   description: Especie del animal
+ *                   description: Especie del animal (e.g., Perro, Gato, Conejo)
+ *                   example: "Gato"
  *                 breed:
  *                   type: string
  *                   description: Raza del animal
+ *                   example: "Siamés"
  *                 health_status:
  *                   type: string
  *                   description: Estado de salud del animal
+ *                   example: "Esterilizada, sin enfermedades conocidas"
  *                 description:
  *                   type: string
- *                   description: Descripción del animal
+ *                   description: Descripción breve del animal
+ *                   example: "Gata tranquila y cariñosa. Le encanta dormir junto a la ventana."
+ *                 photos:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: URLs de las fotos del animal
+ *                   example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
  *                 adoption_status:
  *                   type: string
  *                   description: Estado de adopción del animal
@@ -103,15 +163,29 @@
  *                     - disponible
  *                     - en proceso
  *                     - adoptado
- *                 photos:
- *                   type: array
- *                   items:
- *                     type: string
- *                     description: URL de la foto del animal
+ *                   example: "en proceso"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de creación del registro del animal
+ *                   example: "2024-11-16T09:00:00.000Z"
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Última fecha de actualización del registro del animal
+ *                   example: "2024-11-16T09:00:00.000Z"
  *       404:
  *         description: Animal no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontró el animal"
  *       500:
- *         description: Error al obtener el animal
+ *         description: Error interno al intentar obtener el animal
  *         content:
  *           application/json:
  *             schema:
@@ -120,7 +194,11 @@
  *                 message:
  *                   type: string
  *                   example: "Error al obtener el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
  */
+
 
 /**
  * @swagger
@@ -128,15 +206,16 @@
  *   put:
  *     tags:
  *       - Animals
- *     summary: Actualizar información de un animal
- *     description: Esta ruta permite actualizar la información de un animal específico usando su ID.
+ *     summary: Actualizar un animal por su ID
+ *     description: Actualiza los detalles de un animal específico basándose en su ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del animal
+ *         description: ID único del animal a actualizar
  *         schema:
  *           type: string
+ *         example: "6739975cabab1984320cdbed"
  *     requestBody:
  *       required: true
  *       content:
@@ -149,10 +228,10 @@
  *                 description: Nombre del animal
  *               age:
  *                 type: integer
- *                 description: Edad del animal
+ *                 description: Edad del animal en años
  *               species:
  *                 type: string
- *                 description: Especie del animal
+ *                 description: Especie del animal (e.g., Perro, Gato, Conejo)
  *               breed:
  *                 type: string
  *                 description: Raza del animal
@@ -161,19 +240,19 @@
  *                 description: Estado de salud del animal
  *               description:
  *                 type: string
- *                 description: Descripción del animal
+ *                 description: Descripción breve del animal
  *               photos:
  *                 type: array
  *                 items:
  *                   type: string
- *                   description: URL de la foto del animal
+ *                 description: URLs de las fotos del animal
  *               adoption_status:
  *                 type: string
+ *                 description: Estado de adopción del animal
  *                 enum:
  *                   - disponible
  *                   - en proceso
  *                   - adoptado
- *                 description: Estado de adopción del animal
  *     responses:
  *       200:
  *         description: Animal actualizado exitosamente
@@ -182,13 +261,74 @@
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 _id:
  *                   type: string
- *                   example: "Animal actualizado correctamente"
+ *                   description: ID único del animal
+ *                   example: "6739975cabab1984320cdbed"
+ *                 refugee_id:
+ *                   type: string
+ *                   description: ID del refugio al que pertenece el animal
+ *                   example: "64d0f4c2b45302e4a7d3bc35"
+ *                 name:
+ *                   type: string
+ *                   description: Nombre del animal
+ *                   example: "Luna"
+ *                 age:
+ *                   type: integer
+ *                   description: Edad del animal en años
+ *                   example: 2
+ *                 species:
+ *                   type: string
+ *                   description: Especie del animal (e.g., Perro, Gato, Conejo)
+ *                   example: "Gato"
+ *                 breed:
+ *                   type: string
+ *                   description: Raza del animal
+ *                   example: "Siamés"
+ *                 health_status:
+ *                   type: string
+ *                   description: Estado de salud del animal
+ *                   example: "Esterilizada, sin enfermedades conocidas"
+ *                 description:
+ *                   type: string
+ *                   description: Descripción breve del animal
+ *                   example: "Gata tranquila y cariñosa. Le encanta dormir junto a la ventana."
+ *                 photos:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   description: URLs de las fotos del animal
+ *                   example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
+ *                 adoption_status:
+ *                   type: string
+ *                   description: Estado de adopción del animal
+ *                   enum:
+ *                     - disponible
+ *                     - en proceso
+ *                     - adoptado
+ *                   example: "en proceso"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Fecha de creación del registro del animal
+ *                   example: "2024-11-16T09:00:00.000Z"
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: Última fecha de actualización del registro del animal
+ *                   example: "2024-11-16T10:00:00.000Z"
  *       404:
  *         description: Animal no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Animal no encontrado"
  *       500:
- *         description: Error al actualizar el animal
+ *         description: Error interno al intentar actualizar el animal
  *         content:
  *           application/json:
  *             schema:
@@ -197,6 +337,9 @@
  *                 message:
  *                   type: string
  *                   example: "Error al actualizar el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
  */
 
 /**
@@ -206,7 +349,7 @@
  *     tags:
  *       - Animals
  *     summary: Crear un nuevo animal
- *     description: Esta ruta permite registrar un nuevo animal en el sistema.
+ *     description: Crea un nuevo registro de animal en el sistema.
  *     requestBody:
  *       required: true
  *       content:
@@ -214,36 +357,48 @@
  *           schema:
  *             type: object
  *             properties:
+ *               refugee_id:
+ *                 type: string
+ *                 description: ID del refugio al que pertenece el animal
+ *                 example: "64d0f4c2b45302e4a7d3bc35"
  *               name:
  *                 type: string
  *                 description: Nombre del animal
+ *                 example: "Luna"
  *               age:
  *                 type: integer
- *                 description: Edad del animal
+ *                 description: Edad del animal en años
+ *                 example: 2
  *               species:
  *                 type: string
- *                 description: Especie del animal
+ *                 description: Especie del animal (e.g., Perro, Gato, Conejo)
+ *                 example: "Gato"
  *               breed:
  *                 type: string
  *                 description: Raza del animal
+ *                 example: "Siamés"
  *               health_status:
  *                 type: string
  *                 description: Estado de salud del animal
+ *                 example: "Esterilizada, sin enfermedades conocidas"
  *               description:
  *                 type: string
- *                 description: Descripción del animal
+ *                 description: Descripción breve del animal
+ *                 example: "Gata tranquila y cariñosa. Le encanta dormir junto a la ventana."
  *               photos:
  *                 type: array
  *                 items:
  *                   type: string
- *                   description: URL de la foto del animal
+ *                 description: URLs de las fotos del animal
+ *                 example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
  *               adoption_status:
  *                 type: string
+ *                 description: Estado de adopción del animal
  *                 enum:
  *                   - disponible
  *                   - en proceso
  *                   - adoptado
- *                 description: Estado de adopción del animal
+ *                 example: "en proceso"
  *     responses:
  *       201:
  *         description: Animal creado exitosamente
@@ -254,9 +409,69 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Animal creado correctamente"
+ *                   description: Mensaje de confirmación de la creación del animal
+ *                   example: "Animal creado con éxito"
+ *                 animal:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: ID único del animal
+ *                       example: "6739975cabab1984320cdbed"
+ *                     refugee_id:
+ *                       type: string
+ *                       description: ID del refugio al que pertenece el animal
+ *                       example: "64d0f4c2b45302e4a7d3bc35"
+ *                     name:
+ *                       type: string
+ *                       description: Nombre del animal
+ *                       example: "Luna"
+ *                     age:
+ *                       type: integer
+ *                       description: Edad del animal en años
+ *                       example: 2
+ *                     species:
+ *                       type: string
+ *                       description: Especie del animal (e.g., Perro, Gato, Conejo)
+ *                       example: "Gato"
+ *                     breed:
+ *                       type: string
+ *                       description: Raza del animal
+ *                       example: "Siamés"
+ *                     health_status:
+ *                       type: string
+ *                       description: Estado de salud del animal
+ *                       example: "Esterilizada, sin enfermedades conocidas"
+ *                     description:
+ *                       type: string
+ *                       description: Descripción breve del animal
+ *                       example: "Gata tranquila y cariñosa. Le encanta dormir junto a la ventana."
+ *                     photos:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: URLs de las fotos del animal
+ *                       example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
+ *                     adoption_status:
+ *                       type: string
+ *                       description: Estado de adopción del animal
+ *                       enum:
+ *                         - disponible
+ *                         - en proceso
+ *                         - adoptado
+ *                       example: "en proceso"
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Fecha de creación del registro del animal
+ *                       example: "2024-11-16T09:00:00.000Z"
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Última fecha de actualización del registro del animal
+ *                       example: "2024-11-16T09:00:00.000Z"
  *       500:
- *         description: Error al crear el animal
+ *         description: Error al intentar crear el animal
  *         content:
  *           application/json:
  *             schema:
@@ -265,4 +480,7 @@
  *                 message:
  *                   type: string
  *                   example: "Error al crear el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
  */

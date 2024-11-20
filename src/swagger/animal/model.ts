@@ -15,60 +15,45 @@
  *       properties:
  *         refugee_id:
  *           type: string
- *           description: ID del refugio o usuario asociado al animal
- *           example: "507f191e810c19729de860ea"
+ *           description: El ID del refugio al que pertenece el animal
+ *           example: "64d0f4c2b45302e4a7d3bc35"
  *         name:
  *           type: string
- *           description: Nombre del animal
- *           example: "Rex"
+ *           description: El nombre del animal
+ *           example: "Luna"
  *         age:
  *           type: integer
- *           description: Edad del animal en años
- *           example: 5
+ *           description: La edad del animal en años
+ *           example: 3
  *         species:
  *           type: string
- *           description: Especie del animal (ej. perro, gato)
- *           example: "Perro"
+ *           description: La especie del animal (e.g., Perro, Gato, Conejo)
+ *           example: "Gato"
  *         breed:
  *           type: string
- *           description: Raza del animal (opcional)
- *           example: "Pastor Alemán"
+ *           description: La raza del animal (opcional)
+ *           example: "Siamés"
  *         health_status:
  *           type: string
- *           description: Estado de salud del animal
- *           example: "Saludable"
+ *           description: El estado de salud del animal
+ *           example: "Esterilizado, sin enfermedades conocidas"
  *         description:
  *           type: string
- *           description: Descripción adicional del animal
- *           example: "Animal muy amigable y juguetón."
+ *           description: Descripción breve sobre el animal
+ *           example: "Gata tranquila y cariñosa que disfruta de los rayos del sol."
  *         photos:
  *           type: array
  *           items:
  *             type: string
- *             format: uri
- *           description: Array de URLs de fotos del animal
- *           example:
- *             - "https://example.com/photo1.jpg"
- *             - "https://example.com/photo2.png"
+ *           description: Lista de URLs de fotos del animal
+ *           example: ["https://example.com/images/luna1.jpg", "https://example.com/images/luna2.jpg"]
  *         adoption_status:
  *           type: string
- *           description: Estado de adopción del animal
+ *           description: El estado de adopción del animal
  *           enum:
- *             - "disponible"
- *             - "en proceso"
- *             - "adoptado"
- *           default: "disponible"
- *           example: "disponible"
- *       example:
- *         refugee_id: "507f191e810c19729de860ea"
- *         name: "Rex"
- *         age: 5
- *         species: "Perro"
- *         breed: "Pastor Alemán"
- *         health_status: "Saludable"
- *         description: "Animal muy amigable y juguetón."
- *         photos:
- *           - "https://example.com/photo1.jpg"
- *           - "https://example.com/photo2.png"
- *         adoption_status: "disponible"
+ *             - disponible
+ *             - en proceso
+ *             - adoptado
+ *           example: "en proceso"
+ *       description: Información sobre campos para registrar un Animal.
  */
