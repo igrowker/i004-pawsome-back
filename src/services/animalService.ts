@@ -25,6 +25,23 @@ export const getAnimalService = async (id: string) => {
     return animal;
 };
 
+export const createAnimalService = async (animalData: {
+    refugee_id: mongoose.Types.ObjectId;
+    name: string;
+    age: number;
+    species: string;
+    breed?: string;
+    health_status: string;
+    description: string;
+    photos: string[];
+    adoption_status: 'disponible' | 'en proceso' | 'adoptado';
+}) => {
+    const newAnimal = new Animal(animalData);
+    const savedAnimal = await newAnimal.save();
+    return savedAnimal;
+};
+
+
 export const updateAnimalService = async (id: string, updateData: any) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('ID de animal no válido');

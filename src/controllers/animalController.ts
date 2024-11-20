@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAnimalService, getAnimalsService, updateAnimalService } from '../services/animalService';
+import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService } from '../services/animalService';
 
 export const getAnimals = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -33,6 +33,15 @@ export const getAnimal = async (req: Request, res: Response): Promise<Response> 
     }
 };
 
+export const createAnimal = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const { refugee_id, name, age, species, breed, health_status, description, photos, adoption_status } = req.body;
+        const newAnimal = await createAnimalService({ refugee_id, name, age, species, breed, health_status, description, photos, adoption_status });
+        return res.status(201).json({ message: 'Animal creado con éxito', animal: newAnimal });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al crear el animal', error: (error as Error).message });
+    }
+};
 
 export const updateAnimal = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;

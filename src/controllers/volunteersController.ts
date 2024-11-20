@@ -38,7 +38,16 @@ export const getVolunteerOpportunitiesByRefugeeId = async (req: Request, res: Re
 
 export const createVolunteerOpportunity = async (req: Request, res: Response): Promise<void> => {
   try {
-    const opportunity = await volunteerService.createVolunteerOpportunity(req.body);
+    const { refugee_id } = req.params;
+
+    if (!refugee_id) {
+      handleResponse(res, null, false, 'El campo refugee_id es obligatorio', 400);
+      return;
+    }
+
+    const opportunityData = { ...req.body, refugee_id }; 
+    const opportunity = await volunteerService.createVolunteerOpportunity(opportunityData);
+
     handleSuccess(res, opportunity, 'Oportunidad de voluntariado creada exitosamente');
   } catch (error: unknown) {
     if (error instanceof Error && error.message === "Por favor, completa todos los campos requeridos") {
@@ -48,3 +57,4 @@ export const createVolunteerOpportunity = async (req: Request, res: Response): P
     }
   }
 };
+

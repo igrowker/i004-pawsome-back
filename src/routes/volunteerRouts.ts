@@ -1,12 +1,11 @@
 import express from 'express';
 import { createVolunteerOpportunity, getVolunteerOpportunities, getVolunteerOpportunitiesByRefugeeId } from '../controllers/volunteersController';
 
-const router = express.Router();
+const volunteerRoutes = express.Router();
 
-router.route('/')
-  .get(getVolunteerOpportunities)
-  .post(createVolunteerOpportunity);
+volunteerRoutes.get('/', getVolunteerOpportunities);
+volunteerRoutes.get('/:id', getVolunteerOpportunitiesByRefugeeId);
+volunteerRoutes.post('/:id',createVolunteerOpportunity);
 
-router.get('/:id', getVolunteerOpportunitiesByRefugeeId);
 
-export default router;
+export default volunteerRoutes;

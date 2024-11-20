@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
+import moment from 'moment';
 
 interface IAnimal extends Document {
     refugee_id: Types.ObjectId;
@@ -61,7 +62,20 @@ const animalSchema = new Schema<IAnimal>({
         default: 'disponible'
     }
 }, {
-    timestamps: true
+    timestamps: true, //añadir createdAt - updatedAt
+    versionKey: false //omite __v al crear un documento
+});
+
+animalSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        if (ret.createdAt) {
+            ret.createdAt = moment(ret.createdAt).format('DD/MM/YYYY HH:mm');
+        }
+        if (ret.updatedAt) {
+            ret.updatedAt = moment(ret.updatedAt).format('DD/MM/YYYY HH:mm');
+        }
+        return ret;
+    }
 });
 
 const Animal = mongoose.model<IAnimal>('Animal', animalSchema);
