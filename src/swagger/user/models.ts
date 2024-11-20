@@ -91,7 +91,7 @@
  *               - Un número.
  *               - Un carácter especial (!@#$%^&.*).
  *             - Longitud mínima: 8 caracteres.
- *             - Longitud maxima: 50 caracteres.
+ *             - Longitud máxima: 50 caracteres.
  *           minLength: 8
  *           maxLength: 50
  *           pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&.*]).+$"
@@ -122,4 +122,5 @@
  *           type: string
  *           description: Contraseña del usuario
  *           example: "MiContraseñaSegura123!"
+ *       description: Información para el login del usuario.
  */
