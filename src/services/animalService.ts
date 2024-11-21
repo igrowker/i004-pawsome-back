@@ -55,3 +55,15 @@ export const updateAnimalService = async (id: string, updateData: any) => {
 
     return updatedAnimal;
 };
+
+export const deleteAnimalService = async (id: string) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('ID de animal no válido');
+    }
+
+    const deleteAnimal = await Animal.findByIdAndDelete(id);
+
+    if (!deleteAnimal) {
+        throw new Error('Animal no encontrado');
+    }
+};
