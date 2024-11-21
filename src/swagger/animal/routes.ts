@@ -1,7 +1,7 @@
 /**
  * @swagger
  * tags:
- *   - name: Animals
+ *   - name: animals
  */
 
 /**
@@ -9,7 +9,7 @@
  * /animals:
  *   get:
  *     tags:
- *       - Animals
+ *       - animals
  *     summary: Obtener una lista de todos los animales
  *     description: 
  *     responses:
@@ -41,7 +41,7 @@
  * /animals/{id}:
  *   get:
  *     tags:
- *       - Animals
+ *       - animals
  *     summary: Obtener un animal por su ID
  *     description: Retorna los detalles de un animal específico basado en su ID.
  *     parameters:
@@ -90,7 +90,7 @@
  * /animals/{id}:
  *   put:
  *     tags:
- *       - Animals
+ *       - animals
  *     summary: Actualizar un animal por su ID
  *     description: Actualiza los detalles de un animal específico basándose en su ID.
  *     parameters:
@@ -144,7 +144,7 @@
  * /animals:
  *   post:
  *     tags:
- *       - Animals
+ *       - animals
  *     summary: Crear un nuevo animal
  *     description: Crea un nuevo registro de animal en el sistema.
  *     requestBody:
@@ -173,4 +173,56 @@
  *                 error:
  *                   type: string
  *                   example: "Detalles del error"
+ */
+
+/**
+ * @swagger
+ * /animals/{id}:
+ *   delete:
+ *     summary: Eliminar un animal
+ *     description: Elimina un animal específico por su ID.
+ *     tags:
+ *       - animals
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: El ID único del animal a eliminar.
+ *         schema:
+ *           type: string
+ *           example: "64d0f4c2b45302e4a7d3bc35"
+ *     responses:
+ *       200:
+ *         description: Animal eliminado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Animal eliminado exitosamente"
+ *       404:
+ *         description: Animal no encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Animal no encontrado"
+ *       500:
+ *         description: Error interno del servidor al eliminar el animal.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al eliminar el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error interno"
  */
