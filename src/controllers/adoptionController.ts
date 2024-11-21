@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { CreateAdoptionRequest } from "../services/adoptionService";
+import { postAdoptionDto } from "../dtos/postAdoption.dto";
 
 
 export const postAdoption = async (req: Request, res: Response) => {
-    const postAdoption = req.body;
+    const postAdoption: postAdoptionDto = req.body;
 
     try {
         const adoption = await CreateAdoptionRequest(postAdoption);
