@@ -67,6 +67,20 @@ const swaggerConfig = {
         url: 'http://localhost:3000',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [], // Aplicará a todas las rutas por defecto
+      },
+    ],
   },
   apis: [path.join(__dirname, '..', 'swagger', '**', '*.ts')], 
 };

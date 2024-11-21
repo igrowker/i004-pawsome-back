@@ -6,12 +6,14 @@ import adoptionRouter from './adoptionRouter';
 import adminRoutes from './adminRoutes';
 import volunteerRoutes from './volunteerRouts';
 import { checkRole } from '../middlewares/roleMiddleware';
+import authRoutes from './authRoutes';
 
 
 const router = express.Router()
 
 router.use("/animals", animalRoutes)
-router.use("/auth", userRoutes)
+router.use("/auth", authRoutes)
+router.use("/user", userRoutes)
 router.use("/refugees", checkRole('refugee'), refugeesRouter)
 router.use("/", adoptionRouter)
 router.use("/admin", checkRole('admin'), adminRoutes)
