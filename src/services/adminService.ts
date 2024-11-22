@@ -2,15 +2,16 @@ import Usuario from '../models/userModel';
 import VolunteersModel from '../models/volunteersModel';
 import ActivityLog from '../models/adminModel';
 import AnimalModel from '../models/animalModel';
-import AdoptionModel from '../models/adoptionRequests'; 
+import AdoptionModel from '../models/adoptionRequests';
+import { error } from 'console';
 // import DonationModel from '../models/donationModel'; // Comentado hasta que se cree el modelo de donaciones
 
 export const getDashboardData = async (refugeId: string) => {
   try {
     const [totalUsers, totalOpportunities, totalActivities] = await Promise.all([
-      Usuario.countDocuments(), 
-      VolunteersModel.countDocuments({ refugeId }), 
-      ActivityLog.countDocuments({ refugeId }), 
+      Usuario.countDocuments(),
+      VolunteersModel.countDocuments({ refugeId }),
+      ActivityLog.countDocuments({ refugeId }),
     ]);
 
     const recentActivities = await ActivityLog.find({ refugeId })
@@ -41,3 +42,18 @@ export const getDashboardData = async (refugeId: string) => {
     throw new Error(errorMessage);
   }
 };
+export const CreateAdmin = async (userID: string) => {
+  const user = await Usuario.findById({ where: { id: userID } })
+
+  if (!user) {
+    throw new Error('no se encontro el usuario');
+  }
+  if (user.role === 'user') {
+    user.role = 'admin'
+    await user.save();
+  } else {
+    throw new Error('El usuario ya tiene un rol diferente a "user"');
+  }
+
+}
+

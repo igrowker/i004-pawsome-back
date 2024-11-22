@@ -78,7 +78,7 @@ const swaggerConfig = {
     },
     security: [
       {
-        bearerAuth: [], // Aplicará a todas las rutas por defecto
+        bearerAuth: [], 
       },
     ],
   },
