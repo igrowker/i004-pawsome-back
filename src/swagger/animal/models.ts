@@ -119,7 +119,7 @@
  *         breed:
  *           type: string
  *           description: La raza del animal (opcional)
- *           example: "Siamés"
+ *           example: "Siames"
  *         health_status:
  *           type: string
  *           description: |
@@ -128,7 +128,7 @@
  *             - Longitud máxima: 100 caracteres.
  *           minLength: 10
  *           maxLength: 100
- *           example: "Esterilizado, sin enfermedades conocidas"
+ *           example: "Esterilizado"
  *         description:
  *           type: string
  *           description: |

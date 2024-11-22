@@ -15,8 +15,10 @@ export const getUserByIdService = async (id: string) => {
 };
 
 export const updateUserService = async (id: string, updateData: any) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('ID de usuario no válido');
+    const existingUser = await Usuario.findOne({ email: updateData.email });
+
+    if (existingUser && existingUser.id.toString() !== id) {
+      throw new Error('El email ingresado ya está en uso por otro usuario.');
     }
 
     const updatedUser = await Usuario.findByIdAndUpdate(id, updateData, { new: true });
