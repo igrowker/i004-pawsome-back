@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getDashboardData } from '../services/adminService';
+import { CreateAdmin, getDashboardData } from '../services/adminService';
 import { deleteUserByIdService } from '../services/userService';
 import RefugeeNeed from '../models/refugeeNeedModel';
 
@@ -53,5 +53,25 @@ export const deleteRefugeeController = async (req: Request, res: Response): Prom
     res.status(200).json({ message: 'Refugiado eliminado correctamente' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar refugiado', error: (error as Error).message });
+
+export const createAdminController = async (req: Request, res: Response) => {
+  const { userID } = req.params;
+
+  try {
+    await CreateAdmin(userID);
+
+    res.status(200).json({
+      message: 'El usuario ha sido promovido a admin correctamente',
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        error: error.message || 'Ocurrió un error al promover al usuario',
+      });
+    } else {
+      res.status(400).json({
+        error: 'Ocurrió un error desconocido al promover al usuario',
+      });
+    }
   }
 };

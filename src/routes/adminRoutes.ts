@@ -1,10 +1,11 @@
 import express from 'express';
-import { getDashboard, deleteUserController, deleteRefugeeController } from '../controllers/adminController';
+import { createAdminController, getDashboard, deleteUserController, deleteRefugeeController } from '../controllers/adminController';
 import { checkRole } from '../middlewares/roleMiddleware';
 
 const adminRoutes = express.Router();
 
 adminRoutes.get('/dashboard/:refugeId', getDashboard);
+adminRoutes.patch('/promote-to-admin/:userID', createAdminController);
 
 adminRoutes.delete('/users/:userId', checkRole('admin'), deleteUserController);
 
