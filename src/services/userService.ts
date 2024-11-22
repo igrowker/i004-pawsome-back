@@ -2,7 +2,7 @@ import Usuario from '../models/userModel';
 import mongoose from 'mongoose';
 
 export const getUsersService = async () => {
-    const users = await Usuario.find().select('-password'); // Excluye el campo password
+    const users = await Usuario.find().select('-password');
     return users;
 };
 
@@ -12,6 +12,10 @@ export const getUserByIdService = async (id: string) => {
         throw new Error('Usuario no encontrado');
     }
     return user;
+};
+
+export const deleteUserByIdService = async (userId: string) => {
+    return await Usuario.findByIdAndDelete(userId);
 };
 
 export const updateUserService = async (id: string, updateData: any) => {

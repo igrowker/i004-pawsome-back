@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const checkRole = (role: string) => {
+export const checkRole = (...roles: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(' ')[1];
 
@@ -12,7 +12,7 @@ export const checkRole = (role: string) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret') as { role: string };
 
-            if (decoded.role !== role) {
+            if (!roles.includes(decoded.role)) {
                 return res.status(403).json({ message: 'Acceso denegado, rol no autorizado' });
             }
 
@@ -22,3 +22,4 @@ export const checkRole = (role: string) => {
         }
     };
 };
+
