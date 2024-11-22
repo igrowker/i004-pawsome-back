@@ -1,10 +1,10 @@
 import { putRefugeNeedsDto } from "../dtos/putRefugeNeeds.dto";
+import Refugee from "../models/refugeeModel";
 import RefugeeNeed from "../models/refugeeNeedModel";
-import Usuario from "../models/userModel"
 
 
 export const getRefugesService = async (): Promise<any[]> => {
-    const refugees = await Usuario.find({ role: 'refugee' });
+    const refugees = await Refugee.find();
 
     if (!refugees || refugees.length === 0) {
         throw new Error(`Error loading refugees`);
@@ -15,7 +15,7 @@ export const getRefugesService = async (): Promise<any[]> => {
 
 
 export const putRefugeNeedsService = async (id: any, data: putRefugeNeedsDto): Promise<any> => {
-    const refuge = await Usuario.findById(id);
+    const refuge = await Refugee.findById(id);
 
     if (!refuge) {
         throw new Error(`Refuge with ID ${id} not found.`);
