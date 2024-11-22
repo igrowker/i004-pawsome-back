@@ -10,11 +10,13 @@ export const getOpportunitiesByRefugeeId = async (refugee_id: string) => {
 
 export const createVolunteerOpportunity = async ({
   refugee_id,
+  user_id,
   description,
   requirements,
   availability,
 }: {
   refugee_id: string;
+  user_id: string;
   description: string;
   requirements: string;
   availability: string;
@@ -25,6 +27,7 @@ export const createVolunteerOpportunity = async ({
 
   const opportunity = new VolunteersModel({
     refugee_id,
+    user_id,
     description,
     requirements,
     availability,
