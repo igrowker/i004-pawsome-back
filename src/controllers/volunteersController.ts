@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import * as volunteerService from '../services/volunteersServices';
 
 const handleResponse = (res: Response, data: any, success: boolean, message: string, statusCode: number) => {
@@ -65,7 +66,7 @@ export const createVolunteerController = async (req: Request, res: Response) => 
     res.status(201).json(newOpportunity);
   } catch (error) {
     res.status(400).json({
-      error: error.message || 'Ocurrió un error al crear la oportunidad de voluntariado',
+      error: (error as Error).message || 'Ocurrió un error al crear la oportunidad de voluntariado',
     });
   }
 };

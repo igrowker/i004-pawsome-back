@@ -82,24 +82,6 @@
  *     responses:
  *       200:
  *         description: Usuario eliminado exitosamente
-/**
- * @swagger
- * /promote-to-admin/{userID}:
- *   patch:
- *     summary: Promueve un usuario a administrador
- *     description: Este endpoint permite cambiar el rol de un usuario a "admin".
- *     tags:
- *       - Admin
- *     parameters:
- *       - in: path
- *         name: userID
- *         required: true
- *         description: El ID del usuario a promover.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: El usuario ha sido promovido a administrador correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -110,7 +92,7 @@
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: "Usuario eliminado exitosamente"
+ *                   example: "Usuario eliminado correctamente"
  *       404:
  *         description: Usuario no encontrado
  *         content:
@@ -136,7 +118,7 @@
  *                   example: false
  *                 message:
  *                   type: string
- *                   example: "Error al eliminar el usuario"
+ *                   example: "Error interno del servidor"
  */
 
 /**
@@ -158,11 +140,6 @@
  *     responses:
  *       200:
  *         description: Refugiado eliminado exitosamente
- *                 message:
- *                   type: string
- *                   example: El usuario ha sido promovido a admin correctamente
- *       400:
- *         description: Error al promover al usuario, por ejemplo, si el usuario no existe o ya tiene un rol diferente.
  *         content:
  *           application/json:
  *             schema:
@@ -176,11 +153,6 @@
  *                   example: "Refugiado eliminado exitosamente"
  *       404:
  *         description: Refugiado no encontrado
- *                 error:
- *                   type: string
- *                   example: El usuario ya tiene un rol diferente a "user"
- *       404:
- *         description: Usuario no encontrado.
  *         content:
  *           application/json:
  *             schema:
@@ -194,11 +166,6 @@
  *                   example: "Refugiado no encontrado"
  *       500:
  *         description: Error interno del servidor
- *                 error:
- *                   type: string
- *                   example: No se encontró el usuario
- *       500:
- *         description: Error interno del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -209,8 +176,5 @@
  *                   example: false
  *                 message:
  *                   type: string
- *                   example: "Error al eliminar el refugiado"
- *                 error:
- *                   type: string
- *                   example: Ocurrió un error al promover al usuario
+ *                   example: "Error interno del servidor"
  */
