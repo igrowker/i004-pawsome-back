@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/userModel';
+import mailService from '../services/mailService';
 
 const SALT_ROUNDS = 10;
 
@@ -38,12 +39,12 @@ export const forgotPasswordService = async (userEmail:string) => {
     const { forgotPasswordToken } = generateForgotPasswordToken(payload);
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${forgotPasswordToken}`;
 
-/*  await this.mailservice.cambioPasswordMail(
+    await mailService.cambioPasswordMail(
         userExist.email,
         userExist.name,
         resetUrl
     ); 
-*/
+
     
     return forgotPasswordToken
   }
@@ -80,10 +81,13 @@ export const updatePassword = async (userId: string, newPassword: string): Promi
 
     const updatedUser = await Usuario.findByIdAndUpdate(userId, {password: hashedPassword}, { new: true })
 
-/*  await this.mailservice.ConfirmCambiodePassword(
-      updatedUser.email,
-      updatedUser.name,
-      updatedUser.password,
-    ); 
-*/
+    if (updatedUser) {
+        await mailService.confirmCambioDePassword(
+            updatedUser.email,
+            updatedUser.name,
+            newPassword
+        );
+    } else {
+        throw new Error("Usuario no encontrado o actualización fallida.");
+    }
 };
