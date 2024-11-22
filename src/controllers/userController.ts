@@ -1,31 +1,46 @@
-import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { findUserByEmail, createUserService } from '../services/userService';
+import { getUsersService, getUserByIdService, updateUserService } from '../services/userService';
 
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
-
+export const getUsers = async (_req: Request, res: Response) => {
     try {
-        const user = await findUserByEmail(email);
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            res.status(400).json({ message: 'Contraseña incorrecta' });
-            return;
-        }
-
-        res.status(200).json({ message: 'Inicio de sesión exitoso', user });
+        const users = await getUsersService();
+        return res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ message: 'Error al iniciar sesión', error: (error as Error).message });
+        return res.status(500).json({ message: 'Error al obtener los usuarios', error: (error as Error).message });
     }
 };
 
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
-    const { name, password, email, role } = req.body;
+export const getUserById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
     try {
-        const savedUser = await createUserService({ name, password, email, role });
-        res.status(201).json({ message: 'Usuario registrado', user: savedUser });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al registrar el usuario', error: (error as Error).message });
+        const user = await getUserByIdService(id);
+        return res.status(200).json(user);
+    } catch (error: unknown) {
+        if ((error as Error).message === 'Usuario no encontrado') {
+            return res.status(404).json({ message: (error as Error).message });
+        }
+        return res.status(500).json({ message: 'Error al obtener el usuario', error: (error as Error).message });
+    }
+};
+
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    try {
+        const updatedUser = await updateUserService(id, updateData);
+
+        return res.status(200).json(updatedUser);
+
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            if (error.message === 'Usuario no encontrado') {
+                return res.status(404).json({ message: error.message });
+            }
+            return res.status(500).json({ message: 'Error al actualizar el usuario', error: error.message });
+        }
+
+        return res.status(500).json({ message: 'Error desconocido', error });
     }
 };

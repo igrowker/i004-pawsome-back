@@ -1,31 +1,35 @@
-import bcrypt from 'bcrypt';
 import Usuario from '../models/userModel';
+import mongoose from 'mongoose';
 
-const SALT_ROUNDS = 10;
+export const getUsersService = async () => {
+    const users = await Usuario.find().select('-password');
+    return users;
+};
 
-export const findUserByEmail = async (email: string) => {
-    const user = await Usuario.findOne({ email });
+export const getUserByIdService = async (id: string) => {
+    const user = await Usuario.findById(id).select('-password');
     if (!user) {
         throw new Error('Usuario no encontrado');
     }
     return user;
 };
 
-export const createUserService = async (userData: { name: string; password: string; email: string; role: string }) => {
-    const existingUser = await Usuario.findOne({ email: userData.email });
-    if (existingUser) {
-        throw new Error('El email ya existe');
+export const deleteUserByIdService = async (userId: string) => {
+    return await Usuario.findByIdAndDelete(userId);
+};
+
+export const updateUserService = async (id: string, updateData: any) => {
+    const existingUser = await Usuario.findOne({ email: updateData.email });
+
+    if (existingUser && existingUser.id.toString() !== id) {
+      throw new Error('El email ingresado ya está en uso por otro usuario.');
     }
 
-    const allowedRoles = ['user', 'refugee'];
-    if (!allowedRoles.includes(userData.role)) {
-        throw new Error('El rol proporcionado no es válido para el registro');
+    const updatedUser = await Usuario.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedUser) {
+        throw new Error('Usuario no encontrado');
     }
 
-    const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
-    userData.password = hashedPassword;
-
-    const newUser = new Usuario(userData);
-    const savedUser = await newUser.save();
-    return savedUser;
+    return updatedUser;
 };

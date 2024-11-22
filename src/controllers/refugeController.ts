@@ -16,7 +16,7 @@ export const getRefugees = async (req: Request, res: Response) => {
 
 export const putRefugeNeeds = async (req: Request, res: Response): Promise<void> => {
     const putRefuge: putRefugeNeedsDto = req.body;
-    const id = req.params;
+    const { id } = req.params;
 
     try {
         const putrefugee = await putRefugeNeedsService(id, { ...putRefuge });

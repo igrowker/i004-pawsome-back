@@ -12,10 +12,6 @@ export const getAnimalsService = async () => {
 };
 
 export const getAnimalService = async (id: string) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('ID de animal no válido');
-    }
-
     const animal = await Animal.findById(id);
 
     if (!animal) {
@@ -43,10 +39,6 @@ export const createAnimalService = async (animalData: {
 
 
 export const updateAnimalService = async (id: string, updateData: any) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('ID de animal no válido');
-    }
-
     const updatedAnimal = await Animal.findByIdAndUpdate(id, updateData, { new: true });
 
     if (!updatedAnimal) {
@@ -54,4 +46,12 @@ export const updateAnimalService = async (id: string, updateData: any) => {
     }
 
     return updatedAnimal;
+};
+
+export const deleteAnimalService = async (id: string) => {
+    const deleteAnimal = await Animal.findByIdAndDelete(id);
+
+    if (!deleteAnimal) {
+        throw new Error('Animal no encontrado');
+    }
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService } from '../services/animalService';
+import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService } from '../services/animalService';
 
 export const getAnimals = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -58,6 +58,26 @@ export const updateAnimal = async (req: Request, res: Response): Promise<Respons
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: 'Error al actualizar el animal', error: error.message });
+        }
+
+        return res.status(500).json({ message: 'Error desconocido', error });
+    }
+};
+
+export const deleteAnimal = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+
+    try {
+        await deleteAnimalService(id);
+
+        return res.status(200).json({ message: "Animal eliminado exitosamente" });
+        
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            if (error.message === 'Animal no encontrado') {
+                return res.status(404).json({ message: error.message });
+            }
+            return res.status(500).json({ message: 'Error al eliminar el animal', error: error.message });
         }
 
         return res.status(500).json({ message: 'Error desconocido', error });

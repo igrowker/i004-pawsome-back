@@ -6,43 +6,23 @@
 
 /**
  * @swagger
- * /auth/login:
- *   post:
- *     summary: Inicia sesión de un usuario
- *     description: Autentica a un usuario en el sistema con el correo electrónico y la contraseña proporcionados.
+ * /user:
+ *   get:
+ *     summary: Obtiene la lista de todos los usuarios
+ *     description: Recupera todos los usuarios registrados en el sistema.
  *     tags:
  *       - user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserLogin'
  *     responses:
  *       200:
- *         description: Inicio de sesión exitoso
+ *         description: Lista de usuarios
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Inicio de sesión exitoso"
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *       400:
- *         description: Credenciales incorrectas
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Contraseña incorrecta"
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
  *       500:
- *         description: Error interno del servidor
+ *         description: Error al obtener los usuarios
  *         content:
  *           application/json:
  *             schema:
@@ -50,29 +30,33 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al iniciar sesión"
- *                 error:
- *                   type: string
- *                   example: "Error específico del servidor"
+ *                   example: "Error al obtener los usuarios"
  */
 
 /**
  * @swagger
- * /auth/register:
- *   post:
- *     summary: Registra un nuevo usuario
- *     description: Registra un nuevo usuario en el sistema con los datos proporcionados.
+ * /user/{id}:
+ *   get:
+ *     summary: Obtiene un usuario por ID
+ *     description: Recupera los detalles de un usuario específico utilizando su ID.
  *     tags:
  *       - user
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UserDto'
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID del usuario
+ *         schema:
+ *           type: string
  *     responses:
- *       201:
- *         description: Usuario registrado exitosamente
+ *       200:
+ *         description: Usuario encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
  *         content:
  *           application/json:
  *             schema:
@@ -80,19 +64,7 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Usuario registrado"
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *       400:
- *         description: Solicitud mal formada o con datos faltantes
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Faltan campos obligatorios"
+ *                   example: "Usuario no encontrado"
  *       500:
  *         description: Error interno del servidor
  *         content:
@@ -102,8 +74,59 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al registrar el usuario"
+ *                   example: "Error al obtener el usuario"
+ */
+
+/**
+ * @swagger
+ * /user/{id}:
+ *   put:
+ *     tags:
+ *       - user
+ *     summary: Actualizar el usuario por su ID
+ *     description: Actualiza los detalles de un usuario específico basándose en su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID único del usuario a actualizar
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *               $ref: '#/components/schemas/UserDto'
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Usuario no encontrado"
+ *       500:
+ *         description: Error interno al intentar actualizar el usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al actualizar el usuario"
  *                 error:
  *                   type: string
- *                   example: "Error específico del servidor"
+ *                   example: "Detalles del error"
  */

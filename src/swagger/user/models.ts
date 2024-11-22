@@ -18,7 +18,7 @@
  *         name:
  *           type: string
  *           description: Nombre del usuario
- *           example: Juan Pérez
+ *           example: Juan Perez
  *         password:
  *           type: string
  *           description: Contraseña del usuario, encriptada al almacenarse
@@ -75,7 +75,7 @@
  *             - Longitud máxima: 50 caracteres.
  *           minLength: 3
  *           maxLength: 50
- *           example: Juan Pérez
+ *           example: Juan Perez
  *         email:
  *           type: string
  *           description: Correo electrónico válido del usuario.
@@ -91,7 +91,7 @@
  *               - Un número.
  *               - Un carácter especial (!@#$%^&.*).
  *             - Longitud mínima: 8 caracteres.
- *             - Longitud maxima: 50 caracteres.
+ *             - Longitud máxima: 50 caracteres.
  *           minLength: 8
  *           maxLength: 50
  *           pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&.*]).+$"
@@ -122,4 +122,5 @@
  *           type: string
  *           description: Contraseña del usuario
  *           example: "MiContraseñaSegura123!"
+ *       description: Información para el login del usuario.
  */

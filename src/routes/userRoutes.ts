@@ -1,9 +1,13 @@
 import express from 'express';
-import { loginUser, registerUser } from '../controllers/userController';
+import { getUsers, getUserById, updateUser } from '../controllers/userController';
+import { validateInputs } from '../middlewares/validateInputs';
+import { updateUserValidationRules } from '../validations/userValidations';
+import { validateMongoId } from '../validations/paramValidator';
 
 const userRoutes = express.Router();
 
-userRoutes.post('/login', loginUser);
-userRoutes.post('/register', registerUser);
+userRoutes.get('/', getUsers);
+userRoutes.get('/:id', validateMongoId('id'), validateInputs, getUserById);
+userRoutes.put('/:id', validateMongoId('id'), updateUserValidationRules, validateInputs, updateUser);
 
 export default userRoutes;
