@@ -14,7 +14,7 @@ const router = express.Router()
 router.use("/animals", animalRoutes)
 router.use("/auth", authRoutes)
 router.use("/user", userRoutes)
-router.use("/refugees", checkRole('refugee'), refugeesRouter)
+router.use("/refugees", checkRole('refugee', 'admin'), refugeesRouter);
 router.use("/", adoptionRouter)
 router.use("/admin", checkRole('admin'), adminRoutes)
 router.use("/volunteer", volunteerRoutes)
