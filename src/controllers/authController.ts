@@ -63,10 +63,6 @@ export const resetPassword = async (req: Request, res: Response): Promise<Respon
     const { token, newPassword } = req.body;
 
     try {
-        if (!token || !newPassword) {
-            return res.status(400).json({ message: "Token y nueva contraseña son requeridos." });
-        }
-
         const payload = verifyToken(token);
 
         if (!payload) {
