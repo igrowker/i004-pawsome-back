@@ -1,9 +1,12 @@
-import { Request, Response } from 'express';
-import { CreateAdmin, getDashboardData } from '../services/adminService';
-import { deleteUserByIdService } from '../services/userService';
-import RefugeeNeed from '../models/refugeeNeedModel';
+import { Request, Response } from "express";
+import { CreateAdmin, getDashboardData } from "../services/adminService";
+import { deleteUserByIdService } from "../services/userService";
+import RefugeeNeed from "../models/refugeeNeedModel";
 
-export const getDashboard = async (req: Request, res: Response): Promise<void> => {
+export const getDashboard = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const refugeId = req.params.refugeId;
     const dashboardData = await getDashboardData(refugeId);
@@ -14,30 +17,41 @@ export const getDashboard = async (req: Request, res: Response): Promise<void> =
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error instanceof Error ? `Error al obtener el dashboard: ${error.message}` :
-        'Error desconocido al obtener los datos del dashboard',
+      message:
+        error instanceof Error
+          ? `Error al obtener el dashboard: ${error.message}`
+          : "Error desconocido al obtener los datos del dashboard",
     });
   }
 };
 
-export const deleteUserController = async (req: Request, res: Response): Promise<void> => {
+export const deleteUserController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { userId } = req.params;
 
   try {
     const deletedUser = await deleteUserByIdService(userId);
 
     if (!deletedUser) {
-      res.status(404).json({ message: 'Usuario no encontrado' });
+      res.status(404).json({ message: "Usuario no encontrado" });
       return;
     }
 
-    res.status(200).json({ message: 'Usuario eliminado correctamente' });
+    res.status(200).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar usuario', error: (error as Error).message });
+    res.status(500).json({
+      message: "Error al eliminar usuario",
+      error: (error as Error).message,
+    });
   }
 };
 
-export const deleteRefugeeController = async (req: Request, res: Response): Promise<void> => {
+export const deleteRefugeeController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { refugeeId } = req.params;
 
   try {
@@ -46,14 +60,18 @@ export const deleteRefugeeController = async (req: Request, res: Response): Prom
     const deletedRefugee = await RefugeeNeed.findByIdAndDelete(refugeeId);
 
     if (!deletedRefugee) {
-      res.status(404).json({ message: 'Refugiado no encontrado' });
+      res.status(404).json({ message: "Refugiado no encontrado" });
       return;
     }
 
-    res.status(200).json({ message: 'Refugiado eliminado correctamente' });
+    res.status(200).json({ message: "Refugiado eliminado correctamente" });
   } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar refugiado', error: (error as Error).message });
-
+    res.status(500).json({
+      message: "Error al eliminar refugiado",
+      error: (error as Error).message,
+    });
+  }
+};
 export const createAdminController = async (req: Request, res: Response) => {
   const { userID } = req.params;
 
@@ -61,16 +79,16 @@ export const createAdminController = async (req: Request, res: Response) => {
     await CreateAdmin(userID);
 
     res.status(200).json({
-      message: 'El usuario ha sido promovido a admin correctamente',
+      message: "El usuario ha sido promovido a admin correctamente",
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(400).json({
-        error: error.message || 'Ocurrió un error al promover al usuario',
+        error: error.message || "Ocurrió un error al promover al usuario",
       });
     } else {
       res.status(400).json({
-        error: 'Ocurrió un error desconocido al promover al usuario',
+        error: "Ocurrió un error desconocido al promover al usuario",
       });
     }
   }
