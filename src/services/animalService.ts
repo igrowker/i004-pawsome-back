@@ -1,11 +1,29 @@
 import mongoose from 'mongoose';
 import Animal from '../models/animalModel';
+import Refugee from '../models/refugeeModel';
 
 export const getAnimalsService = async () => {
     const animals = await Animal.find();
 
     if (animals.length === 0) {
         throw new Error('No se encontraron animales registrados');
+    }
+
+    return animals;
+};
+
+export const getAnimalesByRefugeeService = async (refugeeId: string) => {
+    const refugee = await Refugee.findById(refugeeId);
+
+    if (!refugee) {
+        throw new Error('No se encontró el refugio');
+    }
+
+    const animals = refugee?.pets
+
+    if (animals) {
+        if(animals.length === 0)
+        throw new Error('Este refugio no posee animales registrados');
     }
 
     return animals;
