@@ -38,6 +38,62 @@
 
 /**
  * @swagger
+ * /animals/refugee/{refugeeId}:
+ *   get:
+ *     tags:
+ *       - animals
+ *     summary: Obtener animales de un refugio por su ID
+ *     description: Retorna los detalles de animales pertenecientes a un refugio
+ *     parameters:
+ *       - in: path
+ *         name: refugeeId
+ *         required: true
+ *         description: ID único refugio a buscar
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     responses:
+ *       200:
+ *         description: Animales del refugio obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: Recurso no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "No se encontró el refugio"
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Este refugio no posee animales registrados"
+ *       500:
+ *         description: Error interno al intentar obtener el refugio
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al obtener animales del refugio"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
+ */
+
+/**
+ * @swagger
  * /animals/{id}:
  *   get:
  *     tags:
@@ -83,7 +139,6 @@
  *                   type: string
  *                   example: "Detalles del error"
  */
-
 
 /**
  * @swagger

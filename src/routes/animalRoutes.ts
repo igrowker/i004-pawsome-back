@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAnimals, getAnimal, updateAnimal, createAnimal, deleteAnimal} from '../controllers/animalController';
+import { getAnimals, getAnimal, updateAnimal, createAnimal, deleteAnimal, getAnimalesByRefugee} from '../controllers/animalController';
 import { validateMongoId } from '../validations/paramValidator';
 import { validateInputs } from '../middlewares/validateInputs';
 import { createAnimalValidationRules, updateAnimalValidationRules } from '../validations/animalValidations';
@@ -7,6 +7,7 @@ import { createAnimalValidationRules, updateAnimalValidationRules } from '../val
 const animalRoutes = express.Router();
 
 animalRoutes.get('/', getAnimals);
+animalRoutes.get('/refugee/:refugeeId', getAnimalesByRefugee);
 animalRoutes.get('/:id', validateMongoId('id'), validateInputs, getAnimal);
 animalRoutes.post('/', createAnimalValidationRules, validateInputs, createAnimal);
 animalRoutes.put('/:id', validateMongoId('id'), updateAnimalValidationRules, validateInputs, updateAnimal);
