@@ -13,21 +13,22 @@ export const getAnimalsService = async () => {
 };
 
 export const getAnimalesByRefugeeService = async (refugeeId: string) => {
-    const refugee = await Refugee.findById(refugeeId);
+    const refugee = await Refugee.findById(refugeeId).populate({
+        path: 'pets',
+        model: 'Animal',
+        select: '-__v'
+    });
 
     if (!refugee) {
         throw new Error('No se encontró el refugio');
     }
 
-    const animals = refugee?.pets
-
-    if (animals) {
-        if(animals.length === 0)
+    if (!refugee.pets || refugee.pets.length === 0) {
         throw new Error('Este refugio no posee animales registrados');
     }
 
-    return animals;
-};
+    return refugee.pets;
+}
 
 export const getAnimalService = async (id: string) => {
     const animal = await Animal.findById(id);
@@ -52,6 +53,12 @@ export const createAnimalService = async (animalData: {
 }) => {
     const newAnimal = new Animal(animalData);
     const savedAnimal = await newAnimal.save();
+
+    await Refugee.findByIdAndUpdate(
+        animalData.refugee_id,
+        { $push: { pets: savedAnimal._id } },
+    );
+
     return savedAnimal;
 };
 

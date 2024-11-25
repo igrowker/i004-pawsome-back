@@ -36,10 +36,13 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
-    const { name, password, email, role } = req.body;
+    const { name, last_name, password, email, role } = req.body;
     try {
-        const savedUser = await createUserService({ name, password, email, role });
-        res.status(201).json({ message: 'Usuario registrado', user: savedUser });
+        const savedUser = await createUserService({ name, last_name, password, email, role });
+        res.status(201).json({
+            message: 'Usuario registrado',
+            user_id: savedUser.id
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error al registrar el usuario', error: (error as Error).message });
     }

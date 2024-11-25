@@ -38,7 +38,7 @@
 
 /**
  * @swagger
- * /animals/{refugeeId}:
+ * /animals/refugee/{refugeeId}:
  *   get:
  *     tags:
  *       - animals
