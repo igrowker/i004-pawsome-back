@@ -142,6 +142,48 @@
 
 /**
  * @swagger
+ * /animals/available:
+ *   get:
+ *     summary: Obtener animales disponibles
+ *     description: Devuelve una lista de animales que están disponibles para adopción.
+ *     tags:
+ *       - animals
+ *     responses:
+ *       200:
+ *         description: Lista de animales disponibles obtenida exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: No se encontraron animales disponibles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontraron animales disponibles"
+ *       500:
+ *         description: Error interno del servidor al obtener los animales.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al obtener el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error interno"
+ */
+
+/**
+ * @swagger
  * /animals/{id}:
  *   put:
  *     tags:

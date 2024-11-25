@@ -40,6 +40,17 @@ export const getAnimalService = async (id: string) => {
     return animal;
 };
 
+export const getAvailableAnimalService = async () => {
+    const animals = await Animal.find({ adoption_status: 'disponible' });
+
+    if (!animals || animals.length === 0) {
+        throw new Error('No se encontraron animales disponibles');
+    }
+
+    return animals;
+};
+
+
 export const createAnimalService = async (animalData: {
     refugee_id: mongoose.Types.ObjectId;
     name: string;

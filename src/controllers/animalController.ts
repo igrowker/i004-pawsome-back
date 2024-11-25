@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService, getAnimalesByRefugeeService } from '../services/animalService';
+import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService, getAnimalesByRefugeeService, getAvailableAnimalService } from '../services/animalService';
 
 export const getAnimals = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -40,6 +40,23 @@ export const getAnimal = async (req: Request, res: Response): Promise<Response> 
     } catch (error: unknown) {
         if (error instanceof Error) {
             if (error.message === 'No se encontró el animal') {
+                return res.status(404).json({ message: error.message });
+            }
+            return res.status(500).json({ message: 'Error al obtener el animal', error: error.message });
+        }
+        return res.status(500).json({ message: 'Error desconocido', error });
+    }
+};
+
+export const getAvailableAnimals = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const animals = await getAvailableAnimalService();
+
+        return res.status(200).json(animals);
+
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            if (error.message === 'No se encontraron animales disponibles') {
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: 'Error al obtener el animal', error: error.message });
