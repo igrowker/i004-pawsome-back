@@ -3,14 +3,14 @@ import DonationRequest from '../models/donationsRequest';
 
 export const createDonationRequest = async (req: Request, res: Response) => {
   try {
-    const { id, title, description, targetAmount, shelterId, endDate, material } = req.body;
+    const { id, title, description, targetAmount, refugee_id, endDate, material } = req.body;
 
     const donationRequest = new DonationRequest({
       id,
       title,
       description,
       targetAmount,
-      shelter: shelterId,
+      refugee: refugee_id,
       endDate,
       material
     });
