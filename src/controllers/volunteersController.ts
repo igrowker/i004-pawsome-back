@@ -42,7 +42,7 @@ export const createVolunteerController = async (req: Request, res: Response) => 
   const { description, requirements, availability } = req.body;
 
   const token = req.headers.authorization?.split(' ')[1];
-  
+
   if (!token) {
     return res.status(401).json({ error: 'Token de autenticación no proporcionado' });
   }
@@ -68,5 +68,16 @@ export const createVolunteerController = async (req: Request, res: Response) => 
     res.status(400).json({
       error: (error as Error).message || 'Ocurrió un error al crear la oportunidad de voluntariado',
     });
+  }
+};
+
+export const deleteVolunteerOpportunity = async (req: Request, res: Response): Promise<void> => {
+  const { id: refugee_id } = req.params;
+
+  try {
+    const result = await volunteerService.deleteVolunteerOpportunity(refugee_id);
+    handleSuccess(res, result, "Oportunidades de voluntariado eliminadas");
+  } catch (error) {
+    handleError(res, error, "Error al eliminar las oportunidades de voluntariado");
   }
 };
