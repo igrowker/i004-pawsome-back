@@ -1,12 +1,11 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
-interface IRefugee extends Document {
+export interface IRefugee extends Document {
     user_id: Types.ObjectId;
     name_refugee: string;
     description: string;
-    img: string;
-    pets: string[];
-    
+    img?: string;
+    pets?: Types.ObjectId[];    
 }
 
 const refugeeSchema = new Schema<IRefugee>({
@@ -28,10 +27,10 @@ const refugeeSchema = new Schema<IRefugee>({
         default: "https://res.cloudinary.com/dfktz8zkt/image/upload/v1732301708/ur547ht6w6rjuqq2diad.png"
     },
     pets: {
-        type: [String],
+        type: [Schema.Types.ObjectId], 
+        ref: 'Animal'
     }
 });
-
 
 const Refugee = mongoose.model<IRefugee>('Refugee', refugeeSchema);
 

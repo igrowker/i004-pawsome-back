@@ -16,7 +16,7 @@ interface IAnimal extends Document {
 const animalSchema = new Schema<IAnimal>({
     refugee_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario',
+        ref: 'Refugee',
         required: true
     },
     name: {

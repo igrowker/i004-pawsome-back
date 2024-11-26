@@ -7,6 +7,12 @@ export const registerValidationRules = [
     .matches(/^[a-zA-Z\s]*$/).withMessage(
         'El nombre solo puede contener letras y espacios'
     ),
+  body('last_name')
+    .isString().withMessage('El apellido debe ser una cadena de texto.')
+    .isLength({ min: 3, max: 50 }).withMessage('El apellido debe tener entre 3 y 50 caracteres.')
+    .matches(/^[a-zA-Z\s]*$/).withMessage(
+        'El apellido solo puede contener letras y espacios'
+    ),
   body('email')
     .isEmail().withMessage('Debe proporcionar un correo electrónico válido.'),
   body('password')

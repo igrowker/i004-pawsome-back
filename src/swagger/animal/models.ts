@@ -58,7 +58,7 @@
  *             - disponible
  *             - en proceso
  *             - adoptado
- *           example: "en proceso"
+ *           example: "disponible"
  *         createdAt:
  *           type: string
  *           format: date-time
