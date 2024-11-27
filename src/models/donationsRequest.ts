@@ -1,17 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IDonationRequest extends Document {
+  id: Number;
   title: string;
   description: string;
-  targetAmount: number;
-  currentAmount: number;
-  shelter: mongoose.Types.ObjectId;
-  startDate: Date;
-  endDate: Date;
+  targetAmountMoney: number;
+  refugee_id: mongoose.Types.ObjectId;
   status: 'active' | 'completed' | 'canceled';
+  item: string
 }
 
 const DonationRequestSchema = new Schema<IDonationRequest>({
+  id: {
+    type: Number
+  },
   title: {
     type: String,
     required: true
@@ -20,26 +22,13 @@ const DonationRequestSchema = new Schema<IDonationRequest>({
     type: String,
     required: true
   },
-  targetAmount: {
+  targetAmountMoney: {
     type: Number,
-    required: true
+    required: false
   },
-  currentAmount: {
-    type: Number,
-    default: 0
-  },
-  shelter: {
+  refugee_id: {
     type: Schema.Types.ObjectId,
-    ref: 'Shelter',
-    required: true
-  },
-  startDate: {
-    type: Date,
-    default: Date.now,
-    required: true
-  },
-  endDate: {
-    type: Date,
+    ref: 'Usuario',
     required: true
   },
   status: {
@@ -47,6 +36,10 @@ const DonationRequestSchema = new Schema<IDonationRequest>({
     enum: ['active', 'completed', 'canceled'],
     default: 'active',
     required: true
+  },
+  item: {
+    type: String,
+    required: false
   },
 });
 

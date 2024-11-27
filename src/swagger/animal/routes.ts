@@ -38,6 +38,62 @@
 
 /**
  * @swagger
+ * /animals/refugee/{refugeeId}:
+ *   get:
+ *     tags:
+ *       - animals
+ *     summary: Obtener animales de un refugio por su ID
+ *     description: Retorna los detalles de animales pertenecientes a un refugio
+ *     parameters:
+ *       - in: path
+ *         name: refugeeId
+ *         required: true
+ *         description: ID único refugio a buscar
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     responses:
+ *       200:
+ *         description: Animales del refugio obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: Recurso no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "No se encontró el refugio"
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Este refugio no posee animales registrados"
+ *       500:
+ *         description: Error interno al intentar obtener el refugio
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al obtener animales del refugio"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
+ */
+
+/**
+ * @swagger
  * /animals/{id}:
  *   get:
  *     tags:
@@ -84,6 +140,47 @@
  *                   example: "Detalles del error"
  */
 
+/**
+ * @swagger
+ * /animals/available:
+ *   get:
+ *     summary: Obtener animales disponibles
+ *     description: Devuelve una lista de animales que están disponibles para adopción.
+ *     tags:
+ *       - animals
+ *     responses:
+ *       200:
+ *         description: Lista de animales disponibles obtenida exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: No se encontraron animales disponibles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontraron animales disponibles"
+ *       500:
+ *         description: Error interno del servidor al obtener los animales.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al obtener el animal"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error interno"
+ */
 
 /**
  * @swagger
@@ -160,6 +257,16 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: Refugio no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Refugio no encontrado"
  *       500:
  *         description: Error al intentar crear el animal
  *         content:

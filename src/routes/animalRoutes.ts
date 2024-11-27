@@ -1,12 +1,17 @@
 import express from 'express';
-import { getAnimals, getAnimal, updateAnimal, createAnimal, deleteAnimal} from '../controllers/animalController';
+import { getAnimals, getAnimal, updateAnimal, createAnimal, deleteAnimal, getAnimalesByRefugee, getAvailableAnimals} from '../controllers/animalController';
+import { validateMongoId } from '../validations/paramValidator';
+import { validateInputs } from '../middlewares/validateInputs';
+import { createAnimalValidationRules, updateAnimalValidationRules } from '../validations/animalValidations';
 
 const animalRoutes = express.Router();
 
 animalRoutes.get('/', getAnimals);
-animalRoutes.get('/:id', getAnimal);
-animalRoutes.post('/', createAnimal);
-animalRoutes.put('/:id', updateAnimal);
-animalRoutes.delete('/:id', deleteAnimal)
+animalRoutes.get('/available', getAvailableAnimals);
+animalRoutes.get('/refugee/:refugeeId', validateMongoId('refugeeId'), validateInputs, getAnimalesByRefugee);
+animalRoutes.get('/:id', validateMongoId('id'), validateInputs, getAnimal);
+animalRoutes.post('/', createAnimalValidationRules, validateInputs, createAnimal);
+animalRoutes.put('/:id', validateMongoId('id'), updateAnimalValidationRules, validateInputs, updateAnimal);
+animalRoutes.delete('/:id', validateMongoId('id'), validateInputs, deleteAnimal)
 
 export default animalRoutes;

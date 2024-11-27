@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import * as volunteerService from '../services/volunteersServices';
 
 const handleResponse = (res: Response, data: any, success: boolean, message: string, statusCode: number) => {
@@ -36,25 +37,47 @@ export const getVolunteerOpportunitiesByRefugeeId = async (req: Request, res: Re
   }
 };
 
-export const createVolunteerOpportunity = async (req: Request, res: Response): Promise<void> => {
+export const createVolunteerController = async (req: Request, res: Response) => {
+  const { refugeeID } = req.params;
+  const { description, requirements, availability } = req.body;
+
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Token de autenticación no proporcionado' });
+  }
+
   try {
-    const { refugee_id } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret');
+    const userID = (decoded as { sub: string }).sub;
 
-    if (!refugee_id) {
-      handleResponse(res, null, false, 'El campo refugee_id es obligatorio', 400);
-      return;
+    if (![refugeeID, userID].every(Boolean)) {
+      return res.status(400).json({ error: 'Faltan los parámetros necesarios' });
     }
 
-    const opportunityData = { ...req.body, refugee_id }; 
-    const opportunity = await volunteerService.createVolunteerOpportunity(opportunityData);
+    const newOpportunity = await volunteerService.createVolunteerOpportunity({
+      refugee_id: refugeeID,
+      user_id: userID,
+      description,
+      requirements,
+      availability,
+    });
 
-    handleSuccess(res, opportunity, 'Oportunidad de voluntariado creada exitosamente');
-  } catch (error: unknown) {
-    if (error instanceof Error && error.message === "Por favor, completa todos los campos requeridos") {
-      handleResponse(res, null, false, error.message, 400);
-    } else {
-      handleError(res, error, 'Error al crear la oportunidad de voluntariado');
-    }
+    res.status(201).json(newOpportunity);
+  } catch (error) {
+    res.status(400).json({
+      error: (error as Error).message || 'Ocurrió un error al crear la oportunidad de voluntariado',
+    });
   }
 };
 
+export const deleteVolunteerOpportunity = async (req: Request, res: Response): Promise<void> => {
+  const { id: refugee_id } = req.params;
+
+  try {
+    const result = await volunteerService.deleteVolunteerOpportunity(refugee_id);
+    handleSuccess(res, result, "Oportunidades de voluntariado eliminadas");
+  } catch (error) {
+    handleError(res, error, "Error al eliminar las oportunidades de voluntariado");
+  }
+};

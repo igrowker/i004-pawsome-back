@@ -76,3 +76,57 @@
  *                   type: string
  *                   example: "Error al obtener el usuario"
  */
+
+/**
+ * @swagger
+ * /user/{id}:
+ *   put:
+ *     tags:
+ *       - user
+ *     summary: Actualizar el usuario por su ID
+ *     description: Actualiza los detalles de un usuario específico basándose en su ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID único del usuario a actualizar
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *               $ref: '#/components/schemas/UserDto'
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Usuario no encontrado"
+ *       500:
+ *         description: Error interno al intentar actualizar el usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al actualizar el usuario"
+ *                 error:
+ *                   type: string
+ *                   example: "Detalles del error"
+ */
