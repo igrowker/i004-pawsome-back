@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import Animal from '../models/animalModel';
+import Animal, { IAnimal } from '../models/animalModel';
 import Refugee from '../models/refugeeModel';
 
 export const getAnimalsService = async () => {
@@ -51,25 +50,19 @@ export const getAvailableAnimalService = async () => {
 };
 
 
-export const createAnimalService = async (animalData: {
-    refugee_id: mongoose.Types.ObjectId;
-    name: string;
-    age: number;
-    species: string;
-    breed?: string;
-    health_status: string;
-    description: string;
-    photos: string[];
-    adoption_status: 'disponible' | 'en proceso' | 'adoptado';
-}) => {
+export const createAnimalService = async (animalData: IAnimal) => {
     const newAnimal = new Animal(animalData);
     const savedAnimal = await newAnimal.save();
 
-    await Refugee.findByIdAndUpdate(
-        animalData.refugee_id,
-        { $push: { pets: savedAnimal._id } },
-    );
+    const refugee = await Refugee.findById(animalData.refugee_id);
 
+    if (!refugee) {
+        throw new Error('Refugio no encontrado');
+    }
+
+    refugee.pets.push(savedAnimal.id);
+    await refugee.save();
+    
     return savedAnimal;
 };
 

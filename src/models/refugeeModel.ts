@@ -4,8 +4,8 @@ export interface IRefugee extends Document {
     user_id: Types.ObjectId;
     name_refugee: string;
     description: string;
-    img?: string;
-    pets?: Types.ObjectId[];    
+    img: string;
+    pets: Types.ObjectId[];    
 }
 
 const refugeeSchema = new Schema<IRefugee>({
@@ -28,7 +28,8 @@ const refugeeSchema = new Schema<IRefugee>({
     },
     pets: {
         type: [Schema.Types.ObjectId], 
-        ref: 'Animal'
+        ref: 'Animal',
+        default: [],
     }
 });
 
