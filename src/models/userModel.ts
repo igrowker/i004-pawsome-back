@@ -1,7 +1,9 @@
+import { read } from 'fs';
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IUser extends Document {
     name: string;
+    last_name: string;
     password: string;
     email: string;
     created_at?: Date;
@@ -15,6 +17,10 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true
     },
+    last_name: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
@@ -23,7 +29,6 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true,
         unique: true,
-        match: [/\S+@\S+\.\S+/, 'Email inválido']
     },
     created_at: {
         type: Date,
@@ -44,8 +49,24 @@ const userSchema = new Schema<IUser>({
         type: Boolean,
         default: false
     }
+}, {
+    toJSON: {
+        virtuals: true,
+        transform: (_doc, ret) => {
+            delete ret.id;
+            delete ret.__v;
+            delete ret.password;
+            return ret;
+        }
+    },
 });
 
+userSchema.virtual('refugee', {
+    ref: 'Refugee',        
+    localField: '_id',      
+    foreignField: 'user_id', 
+    justOne: true 
+});
 
 const Usuario = mongoose.model<IUser>('Usuario', userSchema);
 

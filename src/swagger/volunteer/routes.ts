@@ -111,3 +111,51 @@
  *                   type: string
  *                   example: Error al crear la oportunidad de voluntariado
  */
+
+/**
+ * @swagger
+ * /volunteers/{id}:
+ *   delete:
+ *     tags:
+ *       - volunteer
+ *     summary: Eliminar oportunidades de voluntariado asociadas a un refugio
+ *     description: Elimina todas las oportunidades de voluntariado asociadas al ID de un refugio.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID del refugio cuyos voluntariados se eliminarán
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Oportunidades de voluntariado eliminadas exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Todas las oportunidades de voluntariado asociadas al refugio han sido eliminadas.
+ *       404:
+ *         description: Refugio no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Refugio no encontrado.
+ *       500:
+ *         description: Error al procesar la solicitud
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Ocurrió un error al intentar eliminar las oportunidades de voluntariado.
+ */

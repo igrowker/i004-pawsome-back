@@ -35,3 +35,11 @@ export const createVolunteerOpportunity = async ({
 
   return opportunity.save();
 };
+
+export const deleteVolunteerOpportunity = async (refugee_id: string) => {
+  const result = await VolunteersModel.deleteMany({ refugee_id });
+  if (result.deletedCount === 0) {
+    throw new Error("No se encontró ninguna oportunidad de voluntariado para el refugio especificado");
+  }
+  return result;
+};

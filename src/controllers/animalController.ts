@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService } from '../services/animalService';
+import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService, getAnimalesByRefugeeService, getAvailableAnimalService } from '../services/animalService';
 
 export const getAnimals = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -14,6 +14,21 @@ export const getAnimals = async (req: Request, res: Response): Promise<Response>
     }
 };
 
+export const getAnimalesByRefugee = async (req: Request, res: Response): Promise<Response> => {
+    const { refugeeId } = req.params;
+
+    try {
+        const animals = await getAnimalesByRefugeeService(refugeeId);
+        return res.status(200).json(animals);
+
+    } catch (error) {
+        if ((error as Error).message === 'No se encontró el refugio' || (error as Error).message === 'Este refugio no posee animales registrados') {
+            return res.status(404).json({ message: (error as Error).message });
+        }
+        return res.status(500).json({ message: 'Error al obtener animales del refugio', error: (error as Error).message });
+    }
+};
+
 export const getAnimal = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
@@ -25,6 +40,23 @@ export const getAnimal = async (req: Request, res: Response): Promise<Response> 
     } catch (error: unknown) {
         if (error instanceof Error) {
             if (error.message === 'No se encontró el animal') {
+                return res.status(404).json({ message: error.message });
+            }
+            return res.status(500).json({ message: 'Error al obtener el animal', error: error.message });
+        }
+        return res.status(500).json({ message: 'Error desconocido', error });
+    }
+};
+
+export const getAvailableAnimals = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const animals = await getAvailableAnimalService();
+
+        return res.status(200).json(animals);
+
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            if (error.message === 'No se encontraron animales disponibles') {
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: 'Error al obtener el animal', error: error.message });
