@@ -31,10 +31,42 @@ export const createAnimalValidationRules = [
 
   body('health_status')
     .isString().withMessage('El estado de salud debe ser una cadena de texto.')
-    .isLength({ min: 10, max: 100 }).withMessage('El estado de salud debe tener entre 10 y 100 caracteres.')
-    .matches(/^[a-zA-Z\s]*$/).withMessage(
-        'El estado de salud solo puede contener letras y espacios'
+    .isIn(['sano', 'enfermo', 'discapacitado']).withMessage(
+      'El estado de salud debe ser uno de los siguientes: sano, enfermo, discapacitado.'
     ),
+    
+  body('medicalHistory')
+    .optional()
+    .isObject().withMessage('El historial médico debe ser un objeto.')
+    .custom((medicalHistory) => {
+      if (medicalHistory.conditions && !Array.isArray(medicalHistory.conditions)) {
+        throw new Error('Las condiciones deben ser un arreglo de cadenas.');
+      }
+      if (medicalHistory.conditions) {
+        medicalHistory.conditions.forEach((condition: string) => {
+          if (typeof condition !== 'string' || !/^[a-zA-Z\s]*$/.test(condition)) {
+            throw new Error('Cada condición debe ser una cadena de texto.');
+          }
+        });
+      }
+      if (medicalHistory.vaccinations && !Array.isArray(medicalHistory.vaccinations)) {
+        throw new Error('Las vacunaciones deben ser un arreglo.');
+      }
+      if (medicalHistory.vaccinations) {
+        medicalHistory.vaccinations.forEach((vaccination: any) => {
+          if (typeof vaccination !== 'object') {
+            throw new Error('Cada vacunación debe ser un objeto.');
+          }
+          if (!vaccination.name || typeof vaccination.name !== 'string') {
+            throw new Error('Cada vacunación debe tener un nombre como cadena de texto.');
+          }
+          if (!vaccination.date || !/^\d{4}-\d{2}-\d{2}$/.test(vaccination.date)) {
+            throw new Error('Cada vacunación debe tener una fecha válida en formato YYYY-MM-DD.');
+          }
+        });
+      }
+      return true;
+    }),
 
   body('description')
     .isString().withMessage('La descripción debe ser una cadena de texto.')
