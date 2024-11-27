@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
-    "start": "nodemon index.ts",
-    "seed": "node ../i004-devops/Pawsome/init-scripts/seed.js"
+    "start": "nodemon index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
