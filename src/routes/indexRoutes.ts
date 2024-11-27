@@ -7,7 +7,7 @@ import adminRoutes from './adminRoutes';
 import volunteerRoutes from './volunteerRouts';
 import { checkRole } from '../middlewares/roleMiddleware';
 import authRoutes from './authRoutes';
-
+import imageRoutes from './imagesRoutes';
 
 const router = express.Router()
 
@@ -19,5 +19,6 @@ router.use("/", adoptionRouter)
 router.use("/admin", checkRole('admin'), adminRoutes)
 router.use("/volunteer", volunteerRoutes)
 router.use("/", (req, res) => res.status(200).send("Welcome to Pawsome"))
+router.use("/images", imageRoutes)
 
 export default router;

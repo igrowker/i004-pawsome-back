@@ -3,4 +3,7 @@ export const publicRoutes = [
     "/auth/register",
     "/auth/forgot-password",
     "/auth/reset-password",
+    "api/images/upload",
   ];
+
+  
