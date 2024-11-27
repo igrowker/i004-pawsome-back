@@ -3,13 +3,9 @@ import { CreateAdmin, getDashboardData } from "../services/adminService";
 import { deleteUserByIdService } from "../services/userService";
 import RefugeeNeed from "../models/refugeeNeedModel";
 
-export const getDashboard = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getDashboard = async (req: Request, res: Response): Promise<void> => {
   try {
-    const refugeId = req.params.refugeId;
-    const dashboardData = await getDashboardData(refugeId);
+    const dashboardData = await getDashboardData();
     res.status(200).json({
       success: true,
       data: dashboardData,
@@ -24,6 +20,8 @@ export const getDashboard = async (
     });
   }
 };
+
+
 
 export const deleteUserController = async (
   req: Request,

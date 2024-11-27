@@ -1,3 +1,4 @@
+import path from "path";
 import { match } from "path-to-regexp";
 
 const allPublicRoutes = [
@@ -20,6 +21,7 @@ const allPublicRoutes = [
   { path: "/animals/:id", method: "GET" },
   { path: "/animals/:id", method: "PUT" },
   { path: "/animals/:id", method: "DELETE" },
+  { path: "/admin/dashboard", method: "GET" }
 ];
 
 export const isPublicRoute = (path: string, method: string): boolean => {
