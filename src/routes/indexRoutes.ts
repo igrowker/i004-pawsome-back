@@ -16,7 +16,7 @@ router.use("/auth", authRoutes)
 router.use("/user", userRoutes)
 router.use("/refugees", checkRole('refugee', 'admin'), refugeesRouter);
 router.use("/", adoptionRouter)
-router.use("/admin", checkRole('admin'), adminRoutes)
+router.use("/admin", adminRoutes)
 router.use("/volunteer", volunteerRoutes)
 router.use("/", (req, res) => res.status(200).send("Welcome to Pawsome"))
 
