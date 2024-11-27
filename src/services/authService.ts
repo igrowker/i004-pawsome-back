@@ -13,7 +13,7 @@ export const findUserByEmail = async (email: string) => {
     return user;
 };
 
-export const createUserService = async (userData: { name: string; password: string; email: string; role: string }) => {
+export const createUserService = async (userData: { name: string; last_name:string; password: string; email: string; role: string }) => {
     const existingUser = await Usuario.findOne({ email: userData.email });
     if (existingUser) {
         throw new Error('El email ya existe');

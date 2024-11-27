@@ -5,7 +5,7 @@ import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swaggerConfig";
 import { authenticateToken } from "./middlewares/authMiddleware";
-import { publicRoutes } from "./constants/publicRoutes";
+import { isPublicRoute } from "./constants/publicRoutes";
 
 const app: Express = express();
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -17,7 +17,7 @@ app.use(express.json());
 
 
 app.use((req, res, next) => {
-  if (publicRoutes.includes(req.path)) {
+  if (isPublicRoute(req.path, req.method)) {
     return next();
   }
   authenticateToken(req, res, next); 

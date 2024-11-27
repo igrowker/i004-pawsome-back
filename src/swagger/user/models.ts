@@ -18,7 +18,11 @@
  *         name:
  *           type: string
  *           description: Nombre del usuario
- *           example: Juan Perez
+ *           example: Juan
+ *         last_name:
+ *           type: string
+ *           description: Apellido del usuario
+ *           example: Perez
  *         password:
  *           type: string
  *           description: Contraseña del usuario, encriptada al almacenarse
@@ -51,7 +55,8 @@
  *           example: "2024-11-19T18:54:19.832Z"
  *       example:
  *         _id: "673cdedbe27d2bc143950052"
- *         name: Juan Pérez
+ *         name: Juan
+ *         last_name: Perez
  *         password: "$2b$10$OcZI0daaMLtPgQm/uQLxWukhwlL4t/BNGxHJR9t32.8u6F5eWN5uO"
  *         email: juan.perez@example.com
  *         role: user
@@ -75,7 +80,16 @@
  *             - Longitud máxima: 50 caracteres.
  *           minLength: 3
  *           maxLength: 50
- *           example: Juan Perez
+ *           example: Juan
+ *         last_name:
+ *           type: string
+ *           description: |
+ *             Apellido del usuario.
+ *             - Longitud mínima: 3 caracteres.
+ *             - Longitud máxima: 50 caracteres.
+ *           minLength: 3
+ *           maxLength: 50
+ *           example: Perez
  *         email:
  *           type: string
  *           description: Correo electrónico válido del usuario.

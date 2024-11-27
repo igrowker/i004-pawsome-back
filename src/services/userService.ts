@@ -1,13 +1,12 @@
 import Usuario from '../models/userModel';
-import mongoose from 'mongoose';
 
 export const getUsersService = async () => {
-    const users = await Usuario.find().select('-password');
+    const users = await Usuario.find().populate('refugee');
     return users;
 };
 
 export const getUserByIdService = async (id: string) => {
-    const user = await Usuario.findById(id).select('-password');
+    const user = await Usuario.findById(id).populate('refugee');
     if (!user) {
         throw new Error('Usuario no encontrado');
     }
