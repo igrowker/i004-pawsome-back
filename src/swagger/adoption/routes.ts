@@ -77,3 +77,88 @@
  *                   type: string
  *                   example: "Error interno del servidor"
  */
+
+/**
+ * @swagger
+ * /adoption-request/{id}:
+ *   put:
+ *     tags:
+ *       - Adoption
+ *     summary: Actualizar el estado de una solicitud de adopción
+ *     description: Permite modificar el estado de una solicitud de adopción existente.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "507f191e810c19729de860ea"
+ *         description: ID de la solicitud de adopción que se desea actualizar.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 description: Nuevo estado para la solicitud.
+ *                 enum:
+ *                   - "en revisión"
+ *                   - "aceptada"
+ *                   - "rechazada"
+ *                 example: "aceptada"
+ *     responses:
+ *       200:
+ *         description: Estado actualizado correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Estado actualizado correctamente"
+ *                 adoption:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "507f191e810c19729de860ea"
+ *                     status:
+ *                       type: string
+ *                       example: "aceptada"
+ *       400:
+ *         description: Solicitud inválida o parámetros faltantes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Faltan parámetros requeridos"
+ *       404:
+ *         description: Solicitud de adopción no encontrada.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Solicitud de adopción no encontrada"
+ *       500:
+ *         description: Error interno del servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error interno del servidor"
+ */

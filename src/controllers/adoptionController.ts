@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateAdoptionRequest } from "../services/adoptionService";
+import { CreateAdoptionRequest, UpdateAdoptionStatus } from "../services/adoptionService";
 import { postAdoptionDto } from "../dtos/postAdoption.dto";
 
 
@@ -19,4 +19,28 @@ export const postAdoption = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message: 'loading error', error });
     }
-}
+};
+
+export const putAdoptionStatus = async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+    const { status } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: 'El ID es requerido' });
+    }
+
+    if (!status) {
+        return res.status(400).json({ message: 'El nuevo estado es requerido' });
+    }
+
+    try {
+        const updatedAdoption = await UpdateAdoptionStatus(id, status);
+        return res.status(200).json({ message: 'Estado actualizado correctamente', adoption: updatedAdoption });
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: 'Error al actualizar el estado', error: error.message });
+        } else {
+            return res.status(500).json({ message: 'Error inesperado' });
+        }
+    }
+};
