@@ -7,6 +7,7 @@ import adminRoutes from './adminRoutes';
 import volunteerRoutes from './volunteerRouts';
 import { checkRole } from '../middlewares/roleMiddleware';
 import authRoutes from './authRoutes';
+import paymentRoutes from './paymentRoutes'
 
 
 const router = express.Router()
@@ -18,6 +19,7 @@ router.use("/refugees", refugeesRouter);
 router.use("/", adoptionRouter)
 router.use("/admin", adminRoutes)
 router.use("/volunteer", volunteerRoutes)
+router.use("/payment", paymentRoutes)
 router.use("/", (req, res) => res.status(200).send("Welcome to Pawsome"))
 
 export default router;
