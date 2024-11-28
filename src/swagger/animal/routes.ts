@@ -257,6 +257,16 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Animal'
+ *       404:
+ *         description: Refugio no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Refugio no encontrado"
  *       500:
  *         description: Error al intentar crear el animal
  *         content:

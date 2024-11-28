@@ -1,17 +1,53 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 import moment from 'moment';
 
-interface IAnimal extends Document {
+interface IVaccination {
+    name: string;
+    date: Date;
+}
+
+interface IMedicalHistory {
+    conditions: string[]; // Ejemplo: ["Artritis", "Alergias"]
+    vaccinations: IVaccination[]; // Ejemplo: [{ name: "Rabia", date: new Date() }]
+}
+
+
+export interface IAnimal extends Document {
     refugee_id: Types.ObjectId;
     name: string;
     age: number;
     species: string;
     breed?: string;
-    health_status: string;
+    health_status: 'sano' | 'enfermo' | 'discapacitado';
+    medicalHistory?: IMedicalHistory;
     description: string;
     photos: string[];
     adoption_status: 'disponible' | 'en proceso' | 'adoptado';
 }
+
+const vaccinationSchema = new Schema<IVaccination>({
+    name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
+});
+
+const medicalHistorySchema = new Schema<IMedicalHistory>({
+    conditions: {
+        type: [String],
+        default: [],
+        trim: true,
+    },
+    vaccinations: {
+        type: [vaccinationSchema],
+        default: [],
+    },
+});
 
 const animalSchema = new Schema<IAnimal>({
     refugee_id: {
@@ -41,7 +77,12 @@ const animalSchema = new Schema<IAnimal>({
     health_status: {
         type: String,
         required: true,
-        trim: true
+        enum: ['sano', 'enfermo', 'discapacitado'],
+        default: 'sano'
+    },
+    medicalHistory: {
+        type: medicalHistorySchema,
+        default: { conditions: [], vaccinations: [] },
     },
     description: {
         type: String,

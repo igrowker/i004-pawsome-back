@@ -2,6 +2,44 @@
  * @swagger
  * components:
  *   schemas:
+ *     IVaccination:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: El nombre de la vacuna administrada al animal.
+ *           example: "Rabia"
+ *         date:
+ *           type: string
+ *           format: date
+ *           description: La fecha en que se administró la vacuna (formato ISO 8601).
+ *           example: "2023-11-24"
+ * 
+ *     IMedicalHistory:
+ *       type: object
+ *       description: Historial médico del animal, incluyendo condiciones y vacunaciones.
+ *       properties:
+ *         conditions:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: |
+ *             Lista de condiciones médicas o problemas de salud que el animal ha tenido.
+ *             - Cada elemento debe ser una condición válida (e.g., artritis, alergias).
+ *           example:
+ *             - "Artritis"
+ *             - "Alergias"
+ *         vaccinations:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/IVaccination'
+ *           description: |
+ *             Lista de vacunas administradas al animal.
+ *             - Cada elemento debe ser un objeto con detalles sobre la vacuna.
+ *           example:
+ *             - name: "Rabia"
+ *               date: "2023-11-24"
+ *
  *     Animal:
  *       type: object
  *       required:
@@ -39,8 +77,18 @@
  *           example: "Siamés"
  *         health_status:
  *           type: string
- *           description: El estado de salud del animal
- *           example: "Esterilizado, sin enfermedades conocidas"
+ *           description: El estado de adopción del animal
+ *           enum:
+ *             - sano
+ *             - enfermo
+ *             - discapacitado
+ *           example: "sano"
+ *         medicalHistory:
+ *           $ref: '#/components/schemas/IMedicalHistory'
+ *           description: |
+ *             Detalles sobre el historial médico del animal, incluyendo:
+ *             - Condiciones médicas previas o actuales.
+ *             - Registro de vacunas administradas.
  *         description:
  *           type: string
  *           description: Descripción breve sobre el animal
@@ -124,11 +172,17 @@
  *           type: string
  *           description: |
  *             El estado de salud del animal.
- *             - Longitud mínima: 10 caracteres.
- *             - Longitud máxima: 100 caracteres.
- *           minLength: 10
- *           maxLength: 100
- *           example: "Esterilizado"
+ *             - Valores permitidos:
+ *               - sano: El animal se encuentra en perfecto estado de salud.
+ *               - enfermo: El animal presenta alguna patologia.
+ *               - discapacitado: El animal tiene condiciones fisicas.
+ *           enum:
+ *             - sano
+ *             - enfermo
+ *             - discapacitado
+ *           example: "sano"
+ *         medicalHistory:
+ *           $ref: '#/components/schemas/IMedicalHistory'
  *         description:
  *           type: string
  *           description: |

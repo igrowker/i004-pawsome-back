@@ -68,27 +68,17 @@ export const getAvailableAnimals = async (req: Request, res: Response): Promise<
 
 export const createAnimal = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const { name, age, species, breed, health_status, description, photos, adoption_status } = req.body;
-
-        if (!req.user){
-            return res.status(401).json({message: 'Usuario no autenticado'})
-        }
-
-        const refugee_id = new mongoose.Types.ObjectId(req.user.id);
-        const newAnimal = await createAnimalService({
-            refugee_id,
-            name, 
-            age, 
-            species, 
-            breed, 
-            health_status, 
-            description, 
-            photos, 
-            adoption_status
-        });
+        const animalData = req.body;
+        const newAnimal = await createAnimalService(animalData);
         return res.status(201).json({ message: 'Animal creado con éxito', animal: newAnimal });
     } catch (error) {
-        return res.status(500).json({ message: 'Error al crear el animal', error: (error as Error).message });
+        if (error instanceof Error) {
+            if (error.message === 'Refugio no encontrado') {
+                return res.status(404).json({ message: error.message });
+            }
+            return res.status(500).json({ message: 'Error al crear el animal', error: error.message });
+        }
+        return res.status(500).json({ message: 'Error desconocido', error });
     }
 };
 
