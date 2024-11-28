@@ -1,11 +1,18 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
-export interface IRefugee extends Document {
+interface IRefugee extends Document {
     user_id: Types.ObjectId;
     name_refugee: string;
     description: string;
     img: string;
     pets: Types.ObjectId[];    
+}
+
+export interface RefugeeInput {
+    user_id: string;
+    name_refugee: string;
+    description: string;
+    img?: string;
 }
 
 const refugeeSchema = new Schema<IRefugee>({
