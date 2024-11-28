@@ -7,4 +7,6 @@ export interface postAdoptionDto {
     experience: boolean;
     request_date?: Date;
     status?: string;
+    adopter_id?: string;
+    animal_id: string;
 }

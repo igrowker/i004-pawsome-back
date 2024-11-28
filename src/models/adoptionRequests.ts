@@ -60,7 +60,6 @@ const adoptionRequest = new Schema<IAdoptionRequest>({
         enum: ['en revisión', 'en aceptada', 'rechazada'],
         default: 'en revisión'
     },
-    
 });
 
 const AdoptionRequests = mongoose.model<IAdoptionRequest>('AdoptionRequests', adoptionRequest);
