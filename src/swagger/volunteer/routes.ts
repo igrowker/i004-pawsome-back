@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /volunteers:
+ * /volunteer:
  *   get:
  *     tags:
  *       - volunteer
@@ -28,7 +28,7 @@
 
 /**
  * @swagger
- * /volunteers/{id}:
+ * /volunteer/{id}:
  *   get:
  *     tags:
  *       - volunteer
@@ -58,7 +58,7 @@
 
 /**
  * @swagger
- * /volunteers/{id}:
+ * /volunteer/{id}:
  *   post:
  *     tags:
  *       - volunteer
@@ -114,7 +114,7 @@
 
 /**
  * @swagger
- * /volunteers/{id}:
+ * /volunteer/{id}:
  *   delete:
  *     tags:
  *       - volunteer

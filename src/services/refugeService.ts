@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { putRefugeNeedsDto } from "../dtos/putRefugeNeeds.dto";
-import Refugee, { IRefugee } from "../models/refugeeModel";
+import Refugee, { RefugeeInput } from "../models/refugeeModel";
 import RefugeeNeed from "../models/refugeeNeedModel";
 
 
@@ -14,16 +14,15 @@ export const getRefugesService = async (): Promise<any[]> => {
     return refugees;
 }
 
-export const createRefugeeService = async (refugeeData: IRefugee) => {
-    const { user_id, name_refugee, description, img, pets } = refugeeData;
+export const createRefugeeService = async (refugeeData: RefugeeInput) => {
+    const { user_id, name_refugee, description, img } = refugeeData;
 
     try {
         const newRefugee = new Refugee({
             user_id: new Types.ObjectId(user_id),
             name_refugee,
             description,
-            img: img || undefined,
-            pets: pets || []
+            img: img,
         });
 
         const savedRefugee = await newRefugee.save();
