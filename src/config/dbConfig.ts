@@ -3,7 +3,7 @@ import { connect } from "mongoose";
 
 dotenv.config();
 
-const URI = process.env.URI || '';
+const URI = process.env.URI || "";
 
 const dbConfig = async (): Promise<void> => {
   try {
