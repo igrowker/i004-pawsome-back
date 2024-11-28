@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { findUserByEmail, createUserService, forgotPasswordService, verifyToken, updatePassword } from '../services/authService';
+import { createRefugeeService } from '../services/refugeService';
+import { Types } from 'mongoose';
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
@@ -45,6 +47,34 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
         });
     } catch (error) {
         res.status(500).json({ message: 'Error al registrar el usuario', error: (error as Error).message });
+    }
+};
+
+export const registerRefugee = async (req: Request, res: Response): Promise<void> => {
+    const { name, last_name, password, email, role, name_refugee, description, img } = req.body;
+
+    try {
+        const savedUser = await createUserService({ name, last_name, password, email, role });
+
+        const refugeeData = {
+            user_id: savedUser.id,
+            name_refugee,
+            description,
+            img: img || undefined, 
+        };
+
+        const savedRefugee = await createRefugeeService(refugeeData);
+
+        res.status(201).json({
+            message: 'Usuario y su refugio registrados correctamente',
+            user_id: savedUser.id,
+            refugee_id: savedRefugee.id
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al registrar el usuario y su refugio',
+            error: (error as Error).message
+        });
     }
 };
 
