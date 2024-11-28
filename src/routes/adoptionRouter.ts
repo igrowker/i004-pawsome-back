@@ -1,10 +1,9 @@
 import express from 'express';
-import { postAdoption } from '../controllers/adoptionController';
-import { authenticateToken } from '../middlewares/authMiddleware';
+import { postAdoption, putAdoptionStatus } from '../controllers/adoptionController';
 
 const adoptionRouter = express.Router();
 
-adoptionRouter.post('/adoption-request/:animal_id', authenticateToken, postAdoption);
-
+adoptionRouter.post('/adoption-request', postAdoption);
+adoptionRouter.put('/adoption-request/:id', putAdoptionStatus);
 
 export default adoptionRouter;
