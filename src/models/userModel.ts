@@ -10,6 +10,8 @@ interface IUser extends Document {
     role: 'user' | 'refugee' | 'admin';
     isActive: boolean;
     isVolunteer: boolean;
+    favorites: mongoose.Types.ObjectId[];
+    photo?: string;
 }
 
 const userSchema = new Schema<IUser>({
@@ -48,6 +50,15 @@ const userSchema = new Schema<IUser>({
     isVolunteer: {
         type: Boolean,
         default: false
+    },
+    favorites: { 
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: 'Animal',
+        default: []
+    },
+    photo: { 
+        type: String,
+        default: null
     }
 }, {
     toJSON: {
