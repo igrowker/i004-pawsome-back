@@ -4,7 +4,7 @@ import { checkRole } from '../middlewares/roleMiddleware';
 
 const adoptionRouter = express.Router();
 
-adoptionRouter.post('/adoption-request', checkRole('refugee'), postAdoption);
+adoptionRouter.post('/adoption-request/:animal_id', checkRole('user'), postAdoption);
 adoptionRouter.put('/adoption-request/:id', putAdoptionStatus);
 
 export default adoptionRouter;
