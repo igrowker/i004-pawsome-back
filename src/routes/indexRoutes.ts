@@ -8,6 +8,7 @@ import volunteerRoutes from './volunteerRouts';
 import authRoutes from './authRoutes';
 import paymentRoutes from './paymentRoutes'
 import fileUploadRoutes from './fileUploadRoutes';
+import materialDonationRoutes from './materialDonation';
 
 const router = express.Router()
 
@@ -19,7 +20,8 @@ router.use("/", adoptionRouter)
 router.use("/admin", adminRoutes)
 router.use("/volunteer", volunteerRoutes)
 router.use("/payment", paymentRoutes)
-router.use("/files", fileUploadRoutes)
+router.use("/files", fileUploadRoutes);
+router.use("/material-donation", materialDonationRoutes)
 router.use("/", (req, res) => res.status(200).send("Welcome to Pawsome"))
 
 export default router;
