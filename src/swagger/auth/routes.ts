@@ -78,13 +78,26 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Usuario registrado"
- *                 user:
- *                   $ref: '#/components/schemas/User'
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Usuario registrado exitosamente"
+ *                     user_id:
+ *                       type: string
+ *                       example: "6748e6fc2d23d3397bc24d0e" 
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Usuario y su refugio registrados correctamente"
+ *                     user_id:
+ *                       type: string
+ *                       example: "6748e6fc2d23d3397bc24d0e" 
+ *                     refugee_id:
+ *                       type: string
+ *                       example: "67477fb91758a228842bb1ef" 
  *       400:
  *         description: Solicitud mal formada o con datos faltantes
  *         content:
@@ -100,14 +113,23 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error al registrar el usuario"
- *                 error:
- *                   type: string
- *                   example: "Error específico del servidor"
+ *               oneOf:
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Error al registrar el usuario"
+ *                     error:
+ *                       type: string
+ *                       example: "Error específico del servidor" 
+ *                 - type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Error al registrar el usuario y su refugio"
+ *                     error:
+ *                       type: string
+ *                       example: "Error específico del servidor" 
  */
 
 /**
