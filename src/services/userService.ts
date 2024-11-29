@@ -1,4 +1,5 @@
 import Usuario from '../models/userModel';
+import Animal from '../models/animalModel';
 
 export const getUsersService = async () => {
     const users = await Usuario.find().populate('refugee');
@@ -31,4 +32,42 @@ export const updateUserService = async (id: string, updateData: any) => {
     }
 
     return updatedUser;
+};
+
+export const addFavoriteService = async (userId: string, animalId: string) => {
+    const animalObjectId = Animal.toObjectId(animalId);
+
+    const user = await Usuario.findByIdAndUpdate(
+        userId,
+        { $addToSet: { favorites: animalObjectId } },
+        { new: true }
+    ).populate('favorites');
+
+    if (user) {
+        return user;
+    } else {
+        throw new Error('Usuario no encontrado');
+    }
+};
+
+export const removeFavoriteService = async (userId: string, animalId: string) => {
+    const user = await Usuario.findById(userId);
+
+    if (user) {
+        user.favorites = user.favorites.filter(favId => favId.toString() !== animalId);
+        await user.save();
+        return user;
+    } else {
+        throw new Error('Usuario no encontrado');
+    }
+};
+
+export const getFavoritesService = async (userId: string) => {
+    const user = await Usuario.findById(userId).populate('favorites');
+
+    if (user) {
+        return user.favorites;
+    } else {
+        throw new Error('Usuario no encontrado');
+    }
 };
