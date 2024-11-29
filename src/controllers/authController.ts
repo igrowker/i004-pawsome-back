@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { findUserByEmail, createUserService, forgotPasswordService, verifyToken, updatePassword } from '../services/authService';
 import { createRefugeeService } from '../services/refugeService';
-import { Types } from 'mongoose';
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
@@ -42,7 +41,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     try {
         const savedUser = await createUserService({ name, last_name, password, email, role });
         res.status(201).json({
-            message: 'Usuario registrado',
+            message: 'Usuario registrado exitosamente',
             user_id: savedUser.id
         });
     } catch (error) {

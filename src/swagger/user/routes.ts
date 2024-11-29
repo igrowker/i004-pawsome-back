@@ -130,3 +130,99 @@
  *                   type: string
  *                   example: "Detalles del error"
  */
+
+/**
+ * @swagger
+ * /user/favorites/{userId}:
+ *   get:
+ *     tags:
+ *       - favorites
+ *     summary: Obtener favoritos del usuario
+ *     description: Devuelve una lista de elementos favoritos del usuario por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID único del usuario
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     responses:
+ *       200:
+ *         description: Lista de favoritos del usuario
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *               example: ["item1", "item2", "item3"]
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error al obtener favoritos
+ * 
+ *   post:
+ *     tags:
+ *       - favorites
+ *     summary: Agregar un favorito
+ *     description: Agrega un elemento a la lista de favoritos del usuario.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID único del usuario
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               favorite:
+ *                 type: string
+ *                 description: ID del elemento favorito a agregar
+ *                 example: "item4"
+ *     responses:
+ *       201:
+ *         description: Favorito agregado exitosamente
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error al agregar favorito
+ * 
+ *   delete:
+ *     tags:
+ *       - favorites
+ *     summary: Eliminar un favorito
+ *     description: Elimina un elemento de la lista de favoritos del usuario.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID único del usuario
+ *         schema:
+ *           type: string
+ *         example: "6739975cabab1984320cdbed"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               favorite:
+ *                 type: string
+ *                 description: ID del elemento favorito a eliminar
+ *                 example: "item4"
+ *     responses:
+ *       200:
+ *         description: Favorito eliminado exitosamente
+ *       404:
+ *         description: Usuario o favorito no encontrado
+ *       500:
+ *         description: Error al eliminar favorito
+ */

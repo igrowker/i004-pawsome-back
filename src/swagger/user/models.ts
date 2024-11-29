@@ -53,6 +53,16 @@
  *           format: date-time
  *           description: Fecha de creación del usuario
  *           example: "2024-11-19T18:54:19.832Z"
+ *         photo:
+ *           type: string
+ *           description: URL de la foto del usuario
+ *           example: "https://example.com/user-photo.jpg"
+ *         favorites:
+ *           type: array
+ *           description: Lista de IDs de elementos favoritos del usuario
+ *           items:
+ *             type: string
+ *           example: ["item1", "item2", "item3"]
  *       example:
  *         _id: "673cdedbe27d2bc143950052"
  *         name: Juan
@@ -63,7 +73,9 @@
  *         isActive: true
  *         isVolunteer: false
  *         created_at: "2024-11-19T18:54:19.832Z"
- *       description: Información sobre la entidad Usuario.
+ *         description: Información sobre la entidad Usuario.
+ *         photo: "https://example.com/user-photo.jpg"
+ *         favorites: ["item1", "item2", "item3"]
  * 
  *     UserDto:
  *       type: object

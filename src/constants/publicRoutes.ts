@@ -15,7 +15,8 @@ const allPublicRoutes = [
   { path: "/animals/refugee/:refugeeId", method: "GET" },
   { path: "/animals/:id", method: "GET" },
   { path: "/admin/dashboard", method: "GET" },
-  { path: "/volunteer", method: "GET"}
+  { path: "/volunteer", method: "GET"},
+  { path: "/files/upload", method: "POST"}
 ];
 
 export const isPublicRoute = (path: string, method: string): boolean => {

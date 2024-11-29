@@ -119,6 +119,12 @@ animalSchema.set('toJSON', {
     }
 });
 
-const Animal = mongoose.model<IAnimal>('Animal', animalSchema);
+animalSchema.statics.toObjectId = function (id: string) {
+    return new mongoose.Types.ObjectId(id);
+};
+
+const Animal = mongoose.model<IAnimal>('Animal', animalSchema) as mongoose.Model<IAnimal> & {
+    toObjectId: (id: string) => mongoose.Types.ObjectId;
+};
 
 export default Animal;
