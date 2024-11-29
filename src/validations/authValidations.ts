@@ -51,7 +51,10 @@ export const registerRefugeeValidationRules = [
   
   body('name_refugee')
     .isString().withMessage('El nombre del refugio debe ser una cadena de texto.')
-    .isLength({ min: 3, max: 100 }).withMessage('El nombre del refugio debe tener entre 3 y 100 caracteres.'),
+    .isLength({ min: 3, max: 100 }).withMessage('El nombre del refugio debe tener entre 3 y 100 caracteres.')
+    .matches(/^[a-zA-Z\s]*$/).withMessage(
+      'El nombre del refugio solo puede contener letras y espacios'
+  ),
 
   body('description')
     .isString().withMessage('La descripción debe ser una cadena de texto.')
