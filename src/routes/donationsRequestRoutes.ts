@@ -5,11 +5,12 @@ import {
   deleteDonationRequest,
   updateDonationRequestStatus,
 } from '../controllers/donationsRequestController';
+import { authenticateToken } from '../middlewares/authMiddleware';
 
 const donationRoutes = express.Router();
 
 // Crear una nueva solicitud de donación
-donationRoutes.post('/donation-requests', createDonationRequest);
+donationRoutes.post('/donation-requests', authenticateToken,createDonationRequest);
 
 // Obtener todas las solicitudes de donación
 donationRoutes.get('/donation-requests', getAllDonationRequests);
