@@ -3,11 +3,12 @@ import MaterialDonation from '../models/materialDonationModel';
 
 export const createMaterialDonation = async (req: Request, res: Response) => {
   try {
-    const { id, name, description, materialStatus, donation_request_id } = req.body;
+    const { id, name, quantity, description, materialStatus, donation_request_id } = req.body;
 
     const materialDonation = new MaterialDonation({
       id,
       name,
+      quantity,
       description,
       materialStatus,
       donation_request_id,

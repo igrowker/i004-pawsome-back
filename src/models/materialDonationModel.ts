@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 interface IMaterialDonation extends Document {
   id: Number;
   name: string;
+  quantity: number;
   description: string;
   materialStatus: 'new' | 'used';
   donation_request_id: mongoose.Types.ObjectId;
@@ -14,6 +15,10 @@ const MaterialDonationSchema = new Schema<IMaterialDonation>({
   },
   name: {
     type: String,
+    required: true
+  },
+  quantity:{
+    type: Number,
     required: true
   },
   description: {
