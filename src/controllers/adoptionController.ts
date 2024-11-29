@@ -13,6 +13,7 @@ export const postAdoption = async (req: Request, res: Response) => {
     const adopter_id = req.user.id
 
     try {
+        console.log("Datos recibidos en el controlador:", { ...postAdoption, animal_id, adopter_id });
         const adoption = await CreateAdoptionRequest({...postAdoption, animal_id, adopter_id});
 
         res.status(202).json({ message: 'was created correctly', adoption });

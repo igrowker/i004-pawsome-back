@@ -9,9 +9,9 @@ export const authenticateToken = async (req: any, res: any, next: any) => {
     }
 
     try {
-        const user = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret') as {id: string; email: string; role: string;};
+        const user = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret') as {userId: string; email: string; role: string;};
         console.log("Usuario autenticado:", user);
-        req.user = {id: user.id, email: user.email, role: user.role};
+        req.user = {id: user.userId, email: user.email, role: user.role};
         next();
     } catch (error) {
         return res.status(403).json({ message: 'Token no válido' });

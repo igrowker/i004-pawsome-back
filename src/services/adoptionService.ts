@@ -2,6 +2,7 @@ import { postAdoptionDto } from "../dtos/postAdoption.dto";
 import AdoptionRequests from "../models/adoptionRequests"
 
 export const CreateAdoptionRequest = async (adop: postAdoptionDto) => {
+    console.log('datos recibidos:', adop)
     const newAdoption = await AdoptionRequests.create(adop);
 
     if (!newAdoption) {
