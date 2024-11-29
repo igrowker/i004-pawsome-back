@@ -1,9 +1,12 @@
 import { body } from 'express-validator';
 
 export const createAnimalValidationRules = [
-  body('refugee_id')
+  /* body('refugee_id')
     .isString().withMessage('El ID del refugio debe ser una cadena de texto.')
-    .matches(/^[a-fA-F0-9]{24}$/).withMessage('El ID del refugio debe ser un ObjectId válido.'),
+    .matches(/^[a-fA-F0-9]{24}$/).withMessage('El ID del refugio debe ser un ObjectId válido.'), */
+    body('refugee_id')
+    .isString().withMessage('El ID del refugio debe ser una cadena de texto.')
+    .optional(),
 
   body('name')
     .isString().withMessage('El nombre debe ser una cadena de texto.')
@@ -29,7 +32,7 @@ export const createAnimalValidationRules = [
         'La raza solo puede contener letras y espacios'
     ),
 
-  body('health_status')
+    body('health_status')
     .isString().withMessage('El estado de salud debe ser una cadena de texto.')
     .isIn(['sano', 'enfermo', 'discapacitado']).withMessage(
       'El estado de salud debe ser uno de los siguientes: sano, enfermo, discapacitado.'

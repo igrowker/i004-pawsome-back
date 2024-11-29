@@ -5,9 +5,16 @@ import { postAdoptionDto } from "../dtos/postAdoption.dto";
 
 export const postAdoption = async (req: Request, res: Response) => {
     const postAdoption: postAdoptionDto = req.body;
+    if (!req.user){
+        return res.status(403).json({message: 'Usuario no autenticado'})
+    }
+
+    const { animal_id } = req.params
+    const adopter_id = req.user.id
 
     try {
-        const adoption = await CreateAdoptionRequest(postAdoption);
+        console.log("Datos recibidos en el controlador:", { ...postAdoption, animal_id, adopter_id });
+        const adoption = await CreateAdoptionRequest({...postAdoption, animal_id, adopter_id});
 
         res.status(202).json({ message: 'was created correctly', adoption });
     } catch (error) {

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getAnimalService, getAnimalsService, updateAnimalService, createAnimalService, deleteAnimalService, getAnimalesByRefugeeService, getAvailableAnimalService } from '../services/animalService';
+import mongoose from 'mongoose';
 
 export const getAnimals = async (req: Request, res: Response): Promise<Response> => {
     try {

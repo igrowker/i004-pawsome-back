@@ -48,7 +48,6 @@ const adoptionRequest = new Schema<IAdoptionRequest>({
         type: String,
         required: true,
         enum: ['Casa', 'Departamento'],
-        default: 'en revisión'
     },
     experience: {
         type: Boolean,
@@ -57,10 +56,9 @@ const adoptionRequest = new Schema<IAdoptionRequest>({
     status: {
         type: String,
         required: true,
-        enum: ['en revisión', 'en aceptada', 'rechazada'],
+        enum: ['en revisión', 'aceptada', 'rechazada'],
         default: 'en revisión'
     },
-    
 });
 
 const AdoptionRequests = mongoose.model<IAdoptionRequest>('AdoptionRequests', adoptionRequest);

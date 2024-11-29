@@ -4,6 +4,7 @@ import { validateMongoId } from '../validations/paramValidator';
 import { validateInputs } from '../middlewares/validateInputs';
 import { createAnimalValidationRules, updateAnimalValidationRules } from '../validations/animalValidations';
 import { checkRole } from '../middlewares/roleMiddleware';
+//import { authenticateTokenRefugee } from '../middlewares/authMiddleware';
 
 const animalRoutes = express.Router();
 
