@@ -7,9 +7,16 @@ export const getUsersService = async () => {
 };
 
 export const getUserByIdService = async (id: string) => {
-    const user = await Usuario.findById(id).populate('refugee');
+    const user = await Usuario.findById(id)
+    .populate('refugee')
+    .populate('adoptionRequests');
+    
     if (!user) {
         throw new Error('Usuario no encontrado');
+    }
+
+    if (user.role === 'user') {
+        await user.populate('adoptionRequests');
     }
     return user;
 };

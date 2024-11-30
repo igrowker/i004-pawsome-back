@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateAdoptionRequest, UpdateAdoptionStatus } from "../services/adoptionService";
 import { postAdoptionDto } from "../dtos/postAdoption.dto";
+import Usuario from "../models/userModel";
 
 
 export const postAdoption = async (req: Request, res: Response) => {
@@ -15,6 +16,10 @@ export const postAdoption = async (req: Request, res: Response) => {
     try {
         console.log("Datos recibidos en el controlador:", { ...postAdoption, animal_id, adopter_id });
         const adoption = await CreateAdoptionRequest({...postAdoption, animal_id, adopter_id});
+
+        await Usuario.findByIdAndUpdate(adopter_id, {
+            $push: { adoptionRequests: adoption._id },
+        });
 
         res.status(202).json({ message: 'was created correctly', adoption });
     } catch (error) {
