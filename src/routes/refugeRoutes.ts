@@ -4,7 +4,7 @@ import { authenticateToken } from '../middlewares/authMiddleware';
 
 const refugeesRouter = express.Router();
 
-refugeesRouter.get('/', authenticateToken,getRefugees);
+refugeesRouter.get('/', getRefugees);
 refugeesRouter.put('/:id/needs', putRefugeNeeds);
 
 export default refugeesRouter;
