@@ -1,18 +1,23 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IDonationRequest extends Document {
-  id: Number;
+  donationId: mongoose.Types.ObjectId;
   title: string;
   description: string;
-  targetAmountMoney: number;
+  targetAmountMoney?: number;
+  targetItemsCount?: number;
+  monetaryDonation: boolean
+  imageUrl?: string;
   refugee_id: mongoose.Types.ObjectId;
   status: 'active' | 'completed' | 'canceled';
   item: string
 }
 
 const DonationRequestSchema = new Schema<IDonationRequest>({
-  id: {
-    type: Number
+  donationId: {
+    type: Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+    unique: true
   },
   title: {
     type: String,
@@ -22,13 +27,29 @@ const DonationRequestSchema = new Schema<IDonationRequest>({
     type: String,
     required: true
   },
+  imageUrl:{
+    type: String,
+    required: false
+  },
+  monetaryDonation:{
+    type: Boolean,
+    required: true
+  },
   targetAmountMoney: {
     type: Number,
-    required: false
+    required: function (this: IDonationRequest) {
+      return this.monetaryDonation; // Requerido solo si es donación monetaria
+    }
+  },
+  targetItemsCount: {
+    type: Number,
+    required: function (this: IDonationRequest) {
+      return !this.monetaryDonation; // Requerido solo si es donación en especie
+    },
   },
   refugee_id: {
     type: Schema.Types.ObjectId,
-    ref: 'Usuario',
+    ref: 'refugee',
     required: true
   },
   status: {
@@ -36,10 +57,6 @@ const DonationRequestSchema = new Schema<IDonationRequest>({
     enum: ['active', 'completed', 'canceled'],
     default: 'active',
     required: true
-  },
-  item: {
-    type: String,
-    required: false
   },
 });
 
