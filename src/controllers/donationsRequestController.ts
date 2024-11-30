@@ -24,7 +24,7 @@ export const createDonationRequest = async (req: Request, res: Response) => {
 
 export const getAllDonationRequests = async (req: Request, res: Response) => {
   try {
-    const donationRequests = await DonationRequest.find().populate('shelter');
+    const donationRequests = await DonationRequest.find().populate('refugee_id');
     res.status(200).json({ donationRequests });
   } catch (error) {
     res.status(500).json({ message: 'Error in the request', error });
