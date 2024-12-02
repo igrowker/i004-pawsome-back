@@ -25,3 +25,4 @@ FROM base AS dev
 COPY --from=deps-dev /app/node_modules ./node_modules
 COPY . .
 CMD ["npm", "start"]
+
