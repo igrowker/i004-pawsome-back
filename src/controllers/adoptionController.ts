@@ -28,13 +28,10 @@ export const postAdoption = async (req: Request, res: Response) => {
             adopter_id,
         });
 
-        
-
         await Usuario.findByIdAndUpdate(adopter_id, {
             $push: { adoptionRequests: adoption._id },
         });
 
-        res.status(202).json({ message: 'was created correctly', adoption });
         const animal = await Animal.findById(animal_id).exec();
         console.log("Animal encontrado:", animal);
         
