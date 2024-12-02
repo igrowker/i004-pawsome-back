@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import DonationRequest from '../models/donationsRequest';
-import mongoose from 'mongoose';
 
 export const createDonationRequest = async (req: Request, res: Response) => {
   try {
@@ -12,16 +11,14 @@ export const createDonationRequest = async (req: Request, res: Response) => {
 
     const refugee_id = req.user.id;
 
-    console.log("refugee_id:", refugee_id)
-
-    if (!title || !description || !imageUrl || !refugee_id || typeof monetaryDonation !== 'boolean') {
+    if (!title || !description || !refugee_id || typeof monetaryDonation !== 'boolean') {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const donationRequest = new DonationRequest({
       title,
       description,
-      imageUrl,
+      imageUrl: imageUrl ? imageUrl : "https://e7.pngegg.com/pngimages/142/119/png-clipart-cat-paw-dog-paw-prints-animals-pet-thumbnail.png",
       refugee_id: refugee_id,
       monetaryDonation,
       targetAmountMoney: monetaryDonation ? cuantityDonation : undefined,
@@ -29,7 +26,7 @@ export const createDonationRequest = async (req: Request, res: Response) => {
     });
     
     await donationRequest.save();
-
+    console.log()
     res.status(201).json({ message: 'Donation request created successfully', donationRequest });
   } catch (error) {
     console.error(error);
