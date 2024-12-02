@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
-interface IRefugee extends Document {
+export interface IRefugee extends Document {
     user_id: Types.ObjectId;
     name_refugee: string;
     description: string;

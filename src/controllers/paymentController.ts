@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import Payment from '../models/paymentModel';
 import Stripe from 'stripe';
 import dotenv from 'dotenv'
 
 dotenv.config();
 export const createSession = async (req: Request, res: Response) => {
     
-    const {title, description, moneyAmount} = req.body;
+    const {title, description, moneyAmount, refugee_id, user_id} = req.body;
     const stripe = new Stripe(process.env.STRIPE!)
     try {
         const session = await stripe.checkout.sessions.create({
@@ -24,8 +23,12 @@ export const createSession = async (req: Request, res: Response) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'http://localhost:3000/success',
-            cancel_url: 'http://localhost:3000/cancel',
+            success_url: 'http://localhost:5173/donation-success',
+            cancel_url: 'http://localhost:5173/donation-cancel',
+            metadata: {
+                refugee_id: refugee_id,
+                user_id: req.user?.id || "unknown_user",
+            }
         });
 
         // Devolver la sesión creada

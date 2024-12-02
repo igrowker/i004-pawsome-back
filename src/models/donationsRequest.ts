@@ -29,7 +29,8 @@ const DonationRequestSchema = new Schema<IDonationRequest>({
   },
   imageUrl:{
     type: String,
-    required: false
+    required: false, 
+    default:"https://aguacatec.es/wp-content/uploads/2023/10/e5a978b8-6772-4c85-a50e-15581af7d483.png"
   },
   monetaryDonation:{
     type: Boolean,
