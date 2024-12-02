@@ -7,12 +7,20 @@
 
 /**
  * @swagger
- * /adoption-request:
+ * /adoption-request/{animal_id}:
  *   post:
  *     tags:
  *       - Adoption
  *     summary: Crear una solicitud de adopción
- *     description: Esta ruta permite crear una nueva solicitud de adopción para un animal.
+ *     description: Permite crear una nueva solicitud de adopción para un animal. Se envía un correo electrónico al adoptante con los detalles.
+ *     parameters:
+ *       - in: path
+ *         name: animal_id
+ *         required: true
+ *         description: ID del animal que se desea adoptar
+ *         schema:
+ *           type: string
+ *           example: "507f191e810c19729de860ea"
  *     requestBody:
  *       required: true
  *       content:
@@ -20,34 +28,40 @@
  *           schema:
  *             type: object
  *             required:
- *               - animal_id
- *               - adopter_id
- *               - status
+ *               - name
+ *               - details
+ *               - compatibility
+ *               - location
+ *               - housingSituation
+ *               - experience
  *             properties:
- *               animal_id:
+ *               name:
  *                 type: string
- *                 description: ID del animal que se desea adoptar
- *                 example: "507f191e810c19729de860ea"
- *               adopter_id:
+ *                 description: Nombre del adoptante
+ *                 example: "Juan Pérez"
+ *               details:
  *                 type: string
- *                 description: ID del adoptante
- *                 example: "507f191e810c19729de860ab"
- *               request_date:
+ *                 description: Detalles adicionales sobre la solicitud de adopción
+ *                 example: "Estoy interesado en adoptar porque..."
+ *               compatibility:
  *                 type: string
- *                 format: date-time
- *                 description: Fecha de la solicitud de adopción
- *                 example: "2024-11-17T10:00:00Z"
- *               status:
+ *                 description: Información sobre la compatibilidad del adoptante con el animal
+ *                 example: "Buena compatibilidad con perros activos."
+ *               location:
  *                 type: string
- *                 description: Estado de la solicitud
- *                 enum:
- *                   - "en revisión"
- *                   - "aceptada"
- *                   - "rechazada"
- *                 example: "en revisión"
+ *                 description: Ubicación del adoptante
+ *                 example: "Ciudad de México"
+ *               housingSituation:
+ *                 type: string
+ *                 description: Situación de vivienda del adoptante
+ *                 example: "Casa con jardín"
+ *               experience:
+ *                 type: boolean
+ *                 description: Indica si el adoptante tiene experiencia previa con mascotas
+ *                 example: true
  *     responses:
- *       200:
- *         description: Solicitud de adopción creada exitosamente
+ *       202:
+ *         description: Solicitud de adopción creada correctamente y correos enviados
  *         content:
  *           application/json:
  *             schema:
@@ -55,9 +69,12 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Solicitud de adopción creada exitosamente"
- *       400:
- *         description: Datos de la solicitud inválidos
+ *                   example: "Solicitud de adopción creada correctamente y correos enviados"
+ *                 adoption:
+ *                   type: object
+ *                   description: Datos de la adopción creada
+ *       403:
+ *         description: Usuario no autenticado
  *         content:
  *           application/json:
  *             schema:
@@ -65,9 +82,19 @@
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Faltan parámetros requeridos"
+ *                   example: "Usuario no autenticado"
+ *       404:
+ *         description: Animal no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Animal no encontrado"
  *       500:
- *         description: Error en el servidor
+ *         description: Error interno del servidor
  *         content:
  *           application/json:
  *             schema:
