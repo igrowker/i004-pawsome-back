@@ -43,3 +43,27 @@ export const deleteVolunteerOpportunity = async (refugee_id: string) => {
   }
   return result;
 };
+export const updateVolunteerOpportunity = async (
+  opportunity_id: string,
+  updates: {
+    description?: string;
+    requirements?: string;
+    availability?: string;
+  }
+) => {
+  if (!opportunity_id) {
+    throw new Error("Opporunity ID is required");
+  }
+
+  const updatedOpportunity = await VolunteersModel.findByIdAndUpdate(
+    opportunity_id,
+    updates,
+    { new: true }
+  );
+
+  if (!updatedOpportunity) {
+    throw new Error("Opportunity not found");
+  }
+
+  return updatedOpportunity;
+};
