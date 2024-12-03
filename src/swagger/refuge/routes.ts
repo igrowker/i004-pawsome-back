@@ -112,3 +112,73 @@
  *                   type: string
  *                   example: Error al actualizar las necesidades
  */
+
+/**
+ * @swagger
+ * /refugees/{id}:
+ *   get:
+ *     tags:
+ *       - refugee
+ *     summary: Obtener un refugiado por su ID
+ *     description: Devuelve la información de un refugiado específico basado en su ID.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: ID único del refugiado
+ *         example: "63f53a4e7125b9c1b78c1f24"
+ *     responses:
+ *       200:
+ *         description: Refugiado encontrado con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: ID del refugiado
+ *                   example: "63f53a4e7125b9c1b78c1f24"
+ *                 name_refugee:
+ *                   type: string
+ *                   description: Nombre del refugiado
+ *                   example: "Juan Pérez"
+ *                 description:
+ *                   type: string
+ *                   description: Breve descripción del refugiado
+ *                   example: "Refugiado en busca de apoyo médico y alimentos"
+ *                 img:
+ *                   type: string
+ *                   description: URL de la imagen del refugiado
+ *                   example: "https://res.cloudinary.com/dfktz8zkt/image/upload/v1732301708/ur547ht6w6rjuqq2diad.png"
+ *                 pets:
+ *                   type: array
+ *                   description: Lista de IDs de las mascotas asociadas
+ *                   items:
+ *                     type: string
+ *                     example: "63f53a4e7125b9c1b78c1f25"
+ *       404:
+ *         description: Refugiado no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de error
+ *                   example: "No se encontró un refugio con el ID proporcionado."
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de error
+ *                   example: "Ocurrió un error al intentar obtener el refugio."
+ */

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { putRefugeNeedsDto } from "../dtos/putRefugeNeeds.dto";
-import { getRefugesService, putRefugeNeedsService } from "../services/refugeService";
+import { getRefugesService, putRefugeNeedsService, getRefugeeByIdService } from "../services/refugeService";
 
 export const getRefugees = async (req: Request, res: Response) => {
     try {
@@ -26,3 +26,14 @@ export const putRefugeNeeds = async (req: Request, res: Response): Promise<void>
     }
 
 }
+
+export const getRefugeeById = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    try {
+        const refugee = await getRefugeeByIdService(id);
+        res.status(200).json({ message: 'Refugio encontrado', refugee });
+    } catch (error) {
+        res.status(404).json({ message: 'Refugio no encontrado', error: (error as Error).message });
+    }
+};
