@@ -45,3 +45,13 @@ export const putRefugeNeedsService = async (id: any, data: putRefugeNeedsDto): P
     
     return newRefuge;
 }
+
+export const getRefugeeByIdService = async (id: string): Promise<any> => {
+    const refugee = await Refugee.findById(id).populate("pets");
+
+    if (!refugee) {
+        throw new Error(`No se encontró el refugio con la ID: ${id}`);
+    }
+
+    return refugee;
+};

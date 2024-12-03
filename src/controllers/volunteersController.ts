@@ -81,3 +81,20 @@ export const deleteVolunteerOpportunity = async (req: Request, res: Response): P
     handleError(res, error, "Error al eliminar las oportunidades de voluntariado");
   }
 };
+
+export const updateVolunteerOpportunity = async (req: Request, res: Response): Promise<void> => {
+  const { opportunityId } = req.params; 
+  const { description, requirements, availability } = req.body; 
+
+  try {
+    const updatedOpportunity = await volunteerService.updateVolunteerOpportunity(opportunityId, {
+      description,
+      requirements,
+      availability,
+    });
+
+    handleSuccess(res, updatedOpportunity, "Oportunidad de voluntariado actualizada exitosamente");
+  } catch (error) {
+    handleError(res, error, "Error al actualizar la oportunidad de voluntariado");
+  }
+};
