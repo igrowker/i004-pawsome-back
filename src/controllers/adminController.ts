@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { CreateAdmin, getDashboardData } from "../services/adminService";
 import { deleteUserByIdService } from "../services/userService";
 import RefugeeNeed from "../models/refugeeNeedModel";
+import Usuario from "../models/userModel";
+import Refugee from "../models/refugeeModel";
+import bcrypt from 'bcrypt'
 
 export const getDashboard = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -30,14 +33,23 @@ export const deleteUserController = async (
   const { userId } = req.params;
 
   try {
-    const deletedUser = await deleteUserByIdService(userId);
+    const user = await Usuario.findById(userId);
 
-    if (!deletedUser) {
-      res.status(404).json({ message: "Usuario no encontrado" });
-      return;
+    if (!user) {
+      return
     }
 
-    res.status(200).json({ message: "Usuario eliminado correctamente" });
+    if (user.role === 'refugee') {
+      const refugeeData = await Refugee.findOneAndDelete({ user_id: user._id });
+
+      if (!refugeeData) {
+        return
+      }
+    }
+
+    await Usuario.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "Usuario y su refugio eliminado correctamente" });
   } catch (error) {
     res.status(500).json({
       message: "Error al eliminar usuario",
@@ -89,5 +101,30 @@ export const createAdminController = async (req: Request, res: Response) => {
         error: "Ocurrió un error desconocido al promover al usuario",
       });
     }
+  }
+};
+
+export const createAdmin = async (req: Request, res: Response): Promise<void> => {
+  const { name, last_name, password, email } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+      const admin = await Usuario.create({
+          name,
+          last_name,
+          password: hashedPassword,
+          email,
+          role: 'admin',
+      });
+      res.status(201).json({
+          message: 'Admin creado exitosamente',
+          admin_id: admin.id,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: 'Error al crear el admin',
+          error: (error as Error).message,
+      });
   }
 };

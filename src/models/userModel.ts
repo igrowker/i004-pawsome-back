@@ -12,6 +12,7 @@ interface IUser extends Document {
     isVolunteer: boolean;
     favorites: mongoose.Types.ObjectId[];
     photo?: string;
+    adoptionRequests: mongoose.Types.ObjectId[] 
 }
 
 const userSchema = new Schema<IUser>({
@@ -59,6 +60,11 @@ const userSchema = new Schema<IUser>({
     photo: { 
         type: String,
         default: null
+    },
+    adoptionRequests: { 
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: 'AdoptionRequests', 
+        default: [] 
     }
 }, {
     toJSON: {
