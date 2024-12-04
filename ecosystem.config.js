@@ -2,10 +2,10 @@ module.exports = {
   apps: [
     {
       name: "i004-pawsome-back",
-      script: "/dist/index.js",
-      watch: true,
-      instances: 1,
-      exec_mode: "fork",
+      script: "./dist/index.js",
+      watch: process.env.NODE_ENV === "development",
+      instances: "max",
+      exec_mode: "cluster",
       env: {
         NODE_ENV: "development",
       },
