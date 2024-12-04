@@ -83,15 +83,23 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/aws-key.pem
-          chmod 400 ~/.ssh/aws-key.pem
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/backend_key.pem
+          chmod 400 ~/.ssh/backend_key.pem
 
       - name: Deploy Backend to AWS EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws-key.pem ec2-user@your-ec2-public-ip "
-            cd ../../i004-pawsome-back || git clone https://github.com/igrowker/i004-pawsome-back ../.. && cd /i004-pawsome-back;
-            git pull;
-            npm install;
-            npm run build;
-            pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js --env production
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/backend_key.pem ec2-user@10.0.139.117 "
+          cd /home/ec2-user || mkdir /home/ec2-user;
+
+          if [ ! -d /home/ec2-user/i004-pawsome-back ]; then
+            git clone https://github.com/igrowker/i004-pawsome-back /home/ec2-user/i004-pawsome-back;
+          fi;
+
+          cd /home/ec2-user/i004-pawsome-back;
+
+          git pull;
+          npm install;
+          npm run build;
+
+          pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js --env production;
           "
