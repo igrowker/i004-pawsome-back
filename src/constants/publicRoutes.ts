@@ -17,6 +17,7 @@ const allPublicRoutes = [
   { path: "/animals/:id", method: "GET" },
   { path: "/admin/dashboard", method: "GET" },
   { path: "/volunteer", method: "GET"},
+  { path: "/volunteer/:id", method: "GET"},
   { path: "/files/upload", method: "POST"}
 ];
 
