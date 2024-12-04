@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { CreateAdoptionRequest, UpdateAdoptionStatus } from "../services/adoptionService";
 import Animal from "../models/animalModel";
 import { postAdoptionDto } from "../dtos/postAdoption.dto";
+import Usuario from "../models/userModel";
+
 import mailService from "../services/mailService";
 
 export const postAdoption = async (req: Request, res: Response) => {
@@ -24,6 +26,10 @@ export const postAdoption = async (req: Request, res: Response) => {
             ...postAdoption,
             animal_id,
             adopter_id,
+        });
+
+        await Usuario.findByIdAndUpdate(adopter_id, {
+            $push: { adoptionRequests: adoption._id },
         });
 
         const animal = await Animal.findById(animal_id).exec();
