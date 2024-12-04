@@ -9,6 +9,7 @@ const allPublicRoutes = [
   { path: "/auth/forgot-password", method: "POST" },
   { path: "/auth/reset-password", method: "POST" },
   { path: "/refugees", method: "GET" },
+  { path: "/refugees/:id", method: "GET" },
   { path: "/refugees/:id/needs", method: "GET" },
   { path: "/animals", method: "GET" },
   { path: "/animals/available", method: "GET" },
