@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import * as volunteerService from '../services/volunteersServices';
+import mongoose from 'mongoose';
+import Refugee from '../models/refugeeModel';
 
 const handleResponse = (res: Response, data: any, success: boolean, message: string, statusCode: number) => {
   res.status(statusCode).json({
@@ -29,8 +31,9 @@ export const getVolunteerOpportunities = async (req: Request, res: Response): Pr
 
 export const getVolunteerOpportunitiesByRefugeeId = async (req: Request, res: Response): Promise<void> => {
   try {
-    const refugeId = req.params.refugeeId;
-    const volunteerOpportunities = await volunteerService.getOpportunitiesByRefugeeId(refugeId);
+    const refugeeId = req.params.refugeeId;
+
+    const volunteerOpportunities = await volunteerService.getOpportunitiesByRefugeeId(refugeeId);
     handleSuccess(res, volunteerOpportunities);
   } catch (error) {
     handleError(res, error, 'Error al obtener las oportunidades de voluntariado');
@@ -38,7 +41,7 @@ export const getVolunteerOpportunitiesByRefugeeId = async (req: Request, res: Re
 };
 
 export const createVolunteerController = async (req: Request, res: Response) => {
-  const { refugeeID } = req.params;
+  const { id } = req.params;
   const { description, requirements, availability } = req.body;
 
   const token = req.headers.authorization?.split(' ')[1];
@@ -49,19 +52,29 @@ export const createVolunteerController = async (req: Request, res: Response) => 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'defaultSecret');
-    const userID = (decoded as { sub: string }).sub;
+    const userID = (decoded as { userId: string }).userId;
 
-    if (![refugeeID, userID].every(Boolean)) {
+    if (![id, userID].every(Boolean)) {
       return res.status(400).json({ error: 'Faltan los parámetros necesarios' });
     }
 
     const newOpportunity = await volunteerService.createVolunteerOpportunity({
-      refugee_id: refugeeID,
+      refugee_id: id,
       user_id: userID,
       description,
       requirements,
-      availability,
+      availability
     });
+
+    const updatedRefugee = await Refugee.findByIdAndUpdate(
+      id,
+      { $push: { opportunities: newOpportunity._id } },
+      { new: true }
+    );
+
+    if (!updatedRefugee) {
+      return res.status(404).json({ error: 'Refugio no encontrado' });
+    }
 
     res.status(201).json(newOpportunity);
   } catch (error) {

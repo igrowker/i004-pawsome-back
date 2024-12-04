@@ -1,12 +1,15 @@
+import mongoose from 'mongoose';
 import VolunteersModel from '../models/volunteersModel';
 
 export const getVolunteerOpportunities = async () => {
   return VolunteersModel.find().populate('refugee_id', 'name');
 };
-export const getOpportunitiesByRefugeeId = async (refugee_id: string) => {
-  return VolunteersModel.find({ refugee_id }).populate('refugee_id', 'name');
-};
 
+export const getOpportunitiesByRefugeeId = async (refugee_id: string) => {
+
+  const objectIdRefugeeId = new mongoose.Types.ObjectId(refugee_id)
+  return VolunteersModel.find({ refugee_id: objectIdRefugeeId}).populate('refugee_id', 'name');
+};
 
 export const createVolunteerOpportunity = async ({
   refugee_id,
@@ -30,7 +33,7 @@ export const createVolunteerOpportunity = async ({
     user_id,
     description,
     requirements,
-    availability,
+    availability
   });
 
   return opportunity.save();

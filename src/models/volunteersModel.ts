@@ -9,11 +9,6 @@ interface IVolunteerOpportunity extends Document {
 }
 
 const VolunteerOpportunitySchema: Schema = new Schema({
-  opportunity_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Opportunity",
-    required: true,
-  },
   refugee_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Refugee",
