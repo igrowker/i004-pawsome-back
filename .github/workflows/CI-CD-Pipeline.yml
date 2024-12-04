@@ -54,7 +54,7 @@ jobs:
       - name: Build and Push Docker Images
         uses: docker/build-push-action@v6
         with:
-          context: ../../Dockerfile
+          context: ./
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/pawsome-node:backend
