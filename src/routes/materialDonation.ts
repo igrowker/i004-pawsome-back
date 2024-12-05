@@ -1,7 +1,9 @@
-import express from 'express';
-import { createMaterialDonation } from '../controllers/materialDonation';
+import express from "express";
+import { createMaterialDonation, updateMaterialDonationQuantity, getMaterialDonationsByUser } from "../controllers/materialDonation";
 const materialDonationRoutes = express.Router();
 
-materialDonationRoutes.post('/', createMaterialDonation);
+materialDonationRoutes.get("/material-donations-by-user/:user_id", getMaterialDonationsByUser);
+materialDonationRoutes.post("/new-material-donation", createMaterialDonation);
+materialDonationRoutes.put("/update-material-donation/:id", updateMaterialDonationQuantity);
 
 export default materialDonationRoutes;
