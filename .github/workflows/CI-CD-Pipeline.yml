@@ -62,7 +62,7 @@ jobs:
 
   deploy-to-render:
     runs-on: ubuntu-latest
-    needs: build-and-push-docker
+    needs: build-and-test
     if: ${{ github.ref_name == 'develop' || github.event.inputs.environment == 'development' }}
 
     steps:
@@ -75,31 +75,47 @@ jobs:
   deploy-to-aws:
     runs-on: ubuntu-latest
     needs: build-and-test
+    if: ${{ github.ref_name == 'main' || github.event.inputs.environment == 'production' }}
 
     steps:
       - name: Checkout Backend Code
         uses: actions/checkout@v3
 
-      - name: Set up SSH key
+      - name: Set up SSH key for Public Instance
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/backend_key.pem
-          chmod 400 ~/.ssh/backend_key.pem
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/pawsome-front.pem
+          chmod 400 ~/.ssh/pawsome-front.pem
 
       - name: Deploy Backend to AWS EC2
+        env:
+          URI: ${{ secrets.URI }}
+          PORT: ${{ secrets.PORT }}
+          MAIL_HOST: ${{ secrets.MAIL_HOST }}
+          MAIL_PORT: ${{ secrets.MAIL_PORT }}
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASS: ${{ secrets.MAIL_PASS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/backend_key.pem ec2-user@10.0.139.117 "
-          cd /home/ec2-user || mkdir /home/ec2-user;
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/pawsome-front.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /private_instance_key.pem ec2-user@${{ secrets.EC2_PRIVATE_IP }} << 'INNER_SSH'
+            cd /home/ec2-user
+            if [ ! -d "i004-devops" ]; then
+              git clone https://github.com/igrowker/i004-devops.git
+            fi
 
-          if [ ! -d /home/ec2-user/i004-pawsome-back ]; then
-            git clone https://github.com/igrowker/i004-pawsome-back /home/ec2-user/i004-pawsome-back;
-          fi;
+            cd i004-devops/pawsome/Pawsome
 
-          cd /home/ec2-user/i004-pawsome-back;
+            docker-compose pull
 
-          git pull;
-          npm install;
-          npm run build;
+            export MONGODB_URI=${MONGODB_URI}
+            export PORT=${PORT}
+            export MAIL_HOST=${MAIL_HOST}
+            export MAIL_PORT=${MAIL_PORT}
+            export MAIL_USER=${MAIL_USER}
+            export MAIL_PASS=${MAIL_PASS}
+            export JWT_SECRET=${JWT_SECRET}
 
-          pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js --env production;
-          "
+            docker-compose up -d --build
+          INNER_SSH
+          EOF
