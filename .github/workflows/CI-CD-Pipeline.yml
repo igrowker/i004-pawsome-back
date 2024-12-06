@@ -97,29 +97,25 @@ jobs:
           MAIL_PASS: ${{ secrets.MAIL_PASS }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/pawsome-front.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << EOF
-            ssh -o StrictHostKeyChecking=no -i /home/ec2-user/private_instance_key.pem ec2-user@${{ secrets.EC2_PRIVATE_IP }} << 'INNER_SSH'
-              cd /home/ec2-user || mkdir /home/ec2-user;
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/pawsome-front.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /private_instance_key.pem ec2-user@${{ secrets.EC2_PRIVATE_IP }} << 'INNER_SSH'
+            cd /home/ec2-user
+            if [ ! -d "i004-devops" ]; then
+              git clone https://github.com/igrowker/i004-devops.git
+            fi
 
-              if [ ! -d /home/ec2-user/i004-pawsome-back ]; then
-                git clone https://github.com/igrowker/i004-pawsome-back /home/ec2-user/i004-pawsome-back;
-              fi;
+            cd i004-devops/pawsome/Pawsome
 
-              cd /home/ec2-user/i004-pawsome-back;
+            docker-compose pull
 
-              git pull;
-              npm install;
+            export MONGODB_URI=${MONGODB_URI}
+            export PORT=${PORT}
+            export MAIL_HOST=${MAIL_HOST}
+            export MAIL_PORT=${MAIL_PORT}
+            export MAIL_USER=${MAIL_USER}
+            export MAIL_PASS=${MAIL_PASS}
+            export JWT_SECRET=${JWT_SECRET}
 
-              export URI=${URI}
-              export PORT=${PORT}
-              export MAIL_HOST=${MAIL_HOST}
-              export MAIL_PORT=${MAIL_PORT}
-              export MAIL_USER=${MAIL_USER}
-              export MAIL_PASS=${MAIL_PASS}
-              export JWT_SECRET=${JWT_SECRET}
-
-              npm run build;
-
-              pm2 reload ecosystem.config.js || pm2 start ecosystem.config.js --env production;
-            INNER_SSH
+            docker-compose up -d --build
+          INNER_SSH
           EOF
