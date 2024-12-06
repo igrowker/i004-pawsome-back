@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import * as volunteerService from '../services/volunteersServices';
 import mongoose from 'mongoose';
 import Refugee from '../models/refugeeModel';
+import Volunteer from '../models/volunteersModel';
 
 const handleResponse = (res: Response, data: any, success: boolean, message: string, statusCode: number) => {
   res.status(statusCode).json({
@@ -109,5 +110,47 @@ export const updateVolunteerOpportunity = async (req: Request, res: Response): P
     handleSuccess(res, updatedOpportunity, "Oportunidad de voluntariado actualizada exitosamente");
   } catch (error) {
     handleError(res, error, "Error al actualizar la oportunidad de voluntariado");
+  }
+};
+
+export const registerVolunteerController = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is missing' });
+    }
+
+    const refugioId = req.params.refugioId;
+    const { oportunidadId, mensaje, fecha, horasDisponibles, formData } = req.body;
+
+    const result = await volunteerService.registerVolunteer(
+      { refugioId, oportunidadId, mensaje, fecha, horasDisponibles, formData },
+      userId
+    );
+
+    res.status(200).json(result);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+export const getVolunteerOpportunitiesController = async (req: Request, res: Response) => {
+  try {
+    const refugioId = req.params.refugioId;
+
+    const refugio = await Refugee.findById(refugioId).populate('opportunities');
+    if (!refugio) {
+      return res.status(404).json({ error: 'Refugio no encontrado' });
+    }
+
+    const oportunidades = await Volunteer.find({ _id: { $in: refugio.opportunities } });
+
+    res.status(200).json({
+      refugio: refugio.name_refugee,
+      oportunidades
+    });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
   }
 };
