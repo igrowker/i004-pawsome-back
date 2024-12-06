@@ -42,9 +42,11 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       message: "Inicio de sesión exitoso",
       token,
       user: {
+        id: user.id,
         email: user.email,
         name: user.name,
         role: user.role,
+        photo: user.photo,
         refugee: refugeeData,
       },
     });
