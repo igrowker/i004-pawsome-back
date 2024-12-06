@@ -87,6 +87,11 @@ jobs:
           echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/pawsome-front.pem
           chmod 400 ~/.ssh/pawsome-front.pem
 
+      - name: Set up SSH key for Private Instance
+        run: |
+          echo "${{ secrets.PRIVATE_INSTANCE_KEY }}" > ~/.ssh/private-instance.pem
+          chmod 400 ~/.ssh/private-instance.pem
+
       - name: Deploy Backend to AWS EC2
         env:
           URI: ${{ secrets.URI }}
@@ -98,7 +103,9 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/pawsome-front.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          ssh -o StrictHostKeyChecking=no -i /private_instance_key.pem ec2-user@${{ secrets.EC2_PRIVATE_IP }} << 'INNER_SSH'
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/private-instance.pem ec2-user@${{ secrets.EC2_PRIVATE_IP }} << 'INNER_SSH'
+
             cd /home/ec2-user
             if [ ! -d "i004-devops" ]; then
               git clone https://github.com/igrowker/i004-devops.git
