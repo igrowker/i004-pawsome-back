@@ -111,7 +111,7 @@ jobs:
               git clone -b pawsome https://github.com/igrowker/i004-devops.git || true
             fi
 
-            cd pawsome/Pawsome
+            cd /Pawsome
 
             docker-compose pull
 
