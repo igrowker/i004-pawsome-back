@@ -108,7 +108,7 @@ jobs:
 
             cd /home/ec2-user
             if [ ! -d "i004-devops" ]; then
-              git clone https://github.com/igrowker/i004-devops.git || tru
+              git clone -b pawsome https://github.com/igrowker/i004-devops.git || true
             fi
 
             cd pawsome/Pawsome
