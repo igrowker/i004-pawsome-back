@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
-    "start": "node --max-old-space-size=1536 -r ts-node/register index.ts"
+    "start": "node --max-old-space-size=2048 -r ts-node/register index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
