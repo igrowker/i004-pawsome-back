@@ -33,6 +33,6 @@ const VolunteerOpportunitySchema: Schema = new Schema({
   },
 });
 
-const Volunteer = mongoose.model<IVolunteerOpportunity>('VolunteerOpportunity', VolunteerOpportunitySchema);
+const VolunteerOpportunity = mongoose.model<IVolunteerOpportunity>('VolunteerOpportunity', VolunteerOpportunitySchema);
 
-export default Volunteer;
+export default VolunteerOpportunity;

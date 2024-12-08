@@ -1,18 +1,17 @@
 import mongoose from 'mongoose';
-import VolunteersModel from '../models/volunteersModel';
+import VolunteerOpportunity from '../models/volunteersModel';
 import Refugee, { IRefugee } from '../models/refugeeModel';
 import Usuario from '../models/userModel';
-import Volunteer from '../models/volunteersModel';
 import mailService from './mailService';
 
 export const getVolunteerOpportunities = async () => {
-  return VolunteersModel.find().populate('refugee_id', 'name');
+  return VolunteerOpportunity.find().populate('refugee_id', 'name');
 };
 
 export const getOpportunitiesByRefugeeId = async (refugee_id: string) => {
 
   const objectIdRefugeeId = new mongoose.Types.ObjectId(refugee_id)
-  return VolunteersModel.find({ refugee_id: objectIdRefugeeId }).populate('refugee_id', 'name');
+  return VolunteerOpportunity.find({ refugee_id: objectIdRefugeeId }).populate('refugee_id', 'name');
 };
 
 export const createVolunteerOpportunity = async ({
@@ -32,7 +31,7 @@ export const createVolunteerOpportunity = async ({
     throw new Error("Por favor, completa todos los campos requeridos");
   }
 
-  const opportunity = new VolunteersModel({
+  const opportunity = new VolunteerOpportunity({
     refugee_id,
     user_id,
     description,
@@ -44,7 +43,7 @@ export const createVolunteerOpportunity = async ({
 };
 
 export const deleteVolunteerOpportunity = async (refugee_id: string) => {
-  const result = await VolunteersModel.deleteMany({ refugee_id });
+  const result = await VolunteerOpportunity.deleteMany({ refugee_id });
   if (result.deletedCount === 0) {
     throw new Error("No se encontró ninguna oportunidad de voluntariado para el refugio especificado");
   }
@@ -62,7 +61,7 @@ export const updateVolunteerOpportunity = async (
     throw new Error("Opporunity ID is required");
   }
 
-  const updatedOpportunity = await VolunteersModel.findByIdAndUpdate(
+  const updatedOpportunity = await VolunteerOpportunity.findByIdAndUpdate(
     opportunity_id,
     updates,
     { new: true }
@@ -99,7 +98,7 @@ export const registerVolunteer = async (input: VolunteerRegistrationInput, userI
     throw new Error('Oportunidad no encontrada en este refugio');
   }
 
-  const detalleOportunidad = await Volunteer.findById(oportunidad);
+  const detalleOportunidad = await VolunteerOpportunity.findById(oportunidad);
   if (!detalleOportunidad) {
     throw new Error('Detalles de la oportunidad no encontrados');
   }

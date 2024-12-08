@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import * as volunteerService from '../services/volunteersServices';
-import mongoose from 'mongoose';
 import Refugee from '../models/refugeeModel';
-import Volunteer from '../models/volunteersModel';
+import VolunteerOpportunity from '../models/volunteersModel';
 
 const handleResponse = (res: Response, data: any, success: boolean, message: string, statusCode: number) => {
   res.status(statusCode).json({
@@ -144,7 +143,7 @@ export const getVolunteerOpportunitiesController = async (req: Request, res: Res
       return res.status(404).json({ error: 'Refugio no encontrado' });
     }
 
-    const oportunidades = await Volunteer.find({ _id: { $in: refugio.opportunities } });
+    const oportunidades = await VolunteerOpportunity.find({ _id: { $in: refugio.opportunities } });
 
     res.status(200).json({
       refugio: refugio.name_refugee,

@@ -1,12 +1,11 @@
 
 import Usuario from '../models/userModel';
-import VolunteersModel from '../models/volunteersModel';
 import ActivityLog from '../models/adminModel';
 import AnimalModel from '../models/animalModel';
 import AdoptionModel from '../models/adoptionRequests';
 import Refugee from '../models/refugeeModel';
 import DonationRequest from '../models/donationsRequest';
-import Volunteer from '../models/volunteersModel';
+import VolunteerOpportunity from '../models/volunteersModel';
 import AdoptionRequests from '../models/adoptionRequests';
 import Animal from '../models/animalModel';
 
@@ -14,7 +13,7 @@ export const getDashboardData = async () => {
   try {
     const [totalUsers, totalOpportunities, totalActivities] = await Promise.all([
       Usuario.countDocuments(),
-      VolunteersModel.countDocuments(),
+      VolunteerOpportunity.countDocuments(),
       ActivityLog.countDocuments(),
     ]);
 
@@ -28,7 +27,7 @@ export const getDashboardData = async () => {
     const totalRefugees = await Refugee.countDocuments();
     const totalDonationsActive = await DonationRequest.countDocuments({ status: 'active' });
     const totalDonationsCompleted = await DonationRequest.countDocuments({ status: 'completed' });
-    const totalVolunteerOpportunities = await Volunteer.countDocuments();
+    const totalVolunteerOpportunities = await VolunteerOpportunity.countDocuments();
     const totalLogs = await ActivityLog.countDocuments();
 
     const metrics = await getMetrics();
@@ -82,7 +81,7 @@ export const getMetrics = async () => {
     const activeDonations = await DonationRequest.countDocuments({ status: 'active' }) || 0;
     const completedDonations = await DonationRequest.countDocuments({ status: 'completed' }) || 0;
 
-    const totalVolunteerOpportunities = await Volunteer.countDocuments() || 0;
+    const totalVolunteerOpportunities = await VolunteerOpportunity.countDocuments() || 0;
 
     const totalLogs = await ActivityLog.countDocuments() || 0;
 
