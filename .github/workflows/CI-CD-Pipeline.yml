@@ -1,4 +1,4 @@
-name: CI/CD Pipeline (Back)
+name: CI/CD Pipeline
 
 on:
   push:
@@ -85,12 +85,12 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/pawsome-front.pem
-          chmod 400 ~/.ssh/pawsome-front.pem
+          chmod 600 ~/.ssh/pawsome-front.pem
 
       - name: Set up SSH key for Private Instance
         run: |
           echo "${{ secrets.PRIVATE_INSTANCE_KEY }}" > ~/.ssh/private-instance.pem
-          chmod 400 ~/.ssh/private-instance.pem
+          chmod 600 ~/.ssh/private-instance.pem
 
       - name: Deploy Backend to AWS EC2
         env:
@@ -108,10 +108,10 @@ jobs:
 
             cd /home/ec2-user
             if [ ! -d "i004-devops" ]; then
-              git clone https://github.com/igrowker/i004-devops.git
+              git clone -b pawsome https://github.com/igrowker/i004-devops.git || true
             fi
 
-            cd i004-devops/pawsome/Pawsome
+            cd /Pawsome
 
             docker-compose pull
 
