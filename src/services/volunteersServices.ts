@@ -93,7 +93,7 @@ export const registerVolunteer = async (input: VolunteerRegistrationInput, userI
     throw new Error('Refugio no encontrado');
   }
 
-  const oportunidad = refugio.opportunities.find(op => op.toString() === oportunidadId);
+  const oportunidad = refugio.opportunities.find(op => op._id.toString() === oportunidadId);
   if (!oportunidad) {
     throw new Error('Oportunidad no encontrada en este refugio');
   }
