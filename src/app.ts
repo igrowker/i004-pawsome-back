@@ -14,7 +14,11 @@ const isAdminRoute = (path: string) => {
 const app: Express = express();
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(cors());
+app.use(cors({
+  origin: '*',  
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(morgan("dev"));
 app.use(express.json());
 
