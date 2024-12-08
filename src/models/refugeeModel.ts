@@ -41,7 +41,7 @@ const refugeeSchema = new Schema<IRefugee>({
     },
     opportunities: {
         type: [Schema.Types.ObjectId],
-        ref: "Volunteer",
+        ref: "VolunteerOpportunity",
         default: []
     }
 });
