@@ -2,8 +2,7 @@ import nodemailer from "nodemailer";
 import { MailConfig } from "../config/mailConfig";
 import { postAdoptionDto } from "../dtos/postAdoption.dto";
 import { IAnimal } from "../models/animalModel";
-import { IRefugee } from "../models/refugeeModel";
-import { generatePDF } from "../config/pdfConfig";
+import juice from "juice";
 
 class MailService {
   private transporter;
@@ -15,48 +14,111 @@ class MailService {
   async confirmCambioDePassword(email: string, name: string, password: string) {
     const subject = "Confirmación de Cambio de Contraseña";
     const html = `
-      <h1>Hola, ${name}</h1>
-      <p>Tu contraseña ha sido actualizada con éxito.</p>
-      <p>Tu nueva contraseña es: <strong>${password}</strong></p>
-      <p>Si no realizaste este cambio, por favor contacta con soporte de inmediato.</p>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirmación de Cambio de Contraseña</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #6AB4A8; color: #333; margin: 0; padding: 0;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <tr>
+            <td style="text-align: center; color: #08121F; padding-bottom: 20px;">
+              <h1 style="font-size: 40px; margin: 0; font-weight: bold;">Confirmación de Cambio de Contraseña</h1>
+              <div style="font-size: 50px; color: #08121F; font-weight: bold; text-transform: uppercase; margin-top: 30px;">PAWSOME!</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 16px; line-height: 1.5; color: #333;">
+              <p>Hola <b>${name}</b>,</p>
+              <p>Tu contraseña ha sido actualizada con éxito.</p>
+              <p>Tu nueva contraseña es: <strong>${password}</strong></p>
+              <p>Si no realizaste este cambio, por favor contacta con soporte de inmediato.</p>
+  
+              <div style="font-size: 30px; text-align: center; margin-top: 20px;">
+                🐾🐾🐾🐾🐾
+              </div>
+  
+              <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #888;">
+                <p>¡El equipo de Mi App!</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
     `;
-
+  
+    const inlinedHtml = juice(html);
+  
     try {
       const info = await this.transporter.sendMail({
         from: `"Mi App" <${MailConfig.auth.user}>`,
         to: email,
         subject,
-        html,
+        html: inlinedHtml, 
       });
       return info;
     } catch (error) {
-      throw new Error("Error al enviar el correo: " );
+      throw new Error("Error al enviar el correo: ");
     }
   }
 
   async cambioPasswordMail(email: string, name: string, resetUrl: string) {
     const subject = "Solicitud de cambio de contraseña";
     const html = `
-      <h1>Hola, ${name}</h1>
-      <p>Hemos recibido una solicitud para cambiar tu contraseña.</p>
-      <p>Si fuiste tú, por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-      <a href="${resetUrl}">Restablecer mi contraseña</a>
-      <p>Si no solicitaste este cambio, por favor ignora este correo.</p>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Solicitud de Cambio de Contraseña</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #6AB4A8; color: #333; margin: 0; padding: 0;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <tr>
+            <td style="text-align: center; color: #08121F; padding-bottom: 20px;">
+              <h1 style="font-size: 40px; margin: 0; font-weight: bold;">Solicitud de Cambio de Contraseña</h1>
+              <div style="font-size: 50px; color: #08121F; font-weight: bold; text-transform: uppercase; margin-top: 30px;">PAWSOME!</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 16px; line-height: 1.5; color: #333;">
+              <p>Hola <b>${name}</b>,</p>
+              <p>Hemos recibido una solicitud para cambiar tu contraseña.</p>
+              <p>Si fuiste tú, por favor haz clic en el siguiente enlace para restablecer tu contraseña:</p>
+              <p style="text-align: center;">
+                <a href="${resetUrl}" style="background-color: #08121F; color: #fff; padding: 12px 20px; font-size: 18px; border-radius: 5px; text-decoration: none; font-weight: bold;">Restablecer mi contraseña</a>
+              </p>
+              <p>Si no solicitaste este cambio, por favor ignora este correo.</p>
+  
+              <div style="font-size: 30px; text-align: center; margin-top: 20px;">
+                🐾🐾🐾🐾🐾
+              </div>
+  
+              <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #888;">
+                <p>¡El equipo de Mi App!</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
     `;
-
+  
+    const inlinedHtml = juice(html);
+  
     try {
       const info = await this.transporter.sendMail({
         from: `"Mi App" <${MailConfig.auth.user}>`,
         to: email,
         subject,
-        html,
+        html: inlinedHtml, 
       });
       return info;
     } catch (error) {
-      throw new Error("Error al enviar el correo de cambio de contraseña: " );
+      throw new Error("Error al enviar el correo de cambio de contraseña: ");
     }
   }
-
   async getAdopterEmailTemplate(
     useremail: string,
     adoptante: postAdoptionDto,
@@ -81,17 +143,41 @@ class MailService {
         </div>
       </div>
     `;
-
-    // HTML para el correo
+  
     const htmlContent = `
-      <div style="text-align: center; font-family: Arial, sans-serif;">
-        <h1 style="font-size: 36px; color: #2c3e50;">Pawsome</h1>
-        <h3>Detalles de la adopción</h3>
-        ${adoptionDetails}
-      </div>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalles de la Adopción</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; background-color: #6AB4A8; color: #333; margin: 0; padding: 0;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <tr>
+            <td style="text-align: center; color: #08121F; padding-bottom: 20px;">
+              <h1 style="font-size: 36px; color: #2c3e50; margin: 0; font-weight: bold;">Pawsome</h1>
+              <h3>Detalles de la adopción</h3>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ${adoptionDetails}
+              <div style="font-size: 30px; text-align: center; margin-top: 20px;">
+                🐾🐾🐾🐾🐾
+              </div>
+              <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #888;">
+                <p>¡Gracias por adoptar!</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
     `;
-
-    return { html: htmlContent };
+  
+    const inlinedHtml = juice(htmlContent);
+  
+    return { html: inlinedHtml };
   }
 
 

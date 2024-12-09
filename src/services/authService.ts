@@ -24,6 +24,7 @@ export const createUserService = async (userData: { name: string; last_name:stri
 
     const newUser = new Usuario(userData);
     const savedUser = await newUser.save();
+    
     return savedUser;
 };
 
