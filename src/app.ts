@@ -8,7 +8,7 @@ import { authenticateToken, authenticateAdminToken } from "./middlewares/authMid
 import { isPublicRoute } from "./constants/publicRoutes";
 
 const isAdminRoute = (path: string) => {
-  return path.startsWith('/admin'); // Detectar rutas de administrador
+  return path.startsWith('/admin'); 
 };
 
 const app: Express = express();

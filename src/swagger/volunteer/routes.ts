@@ -159,3 +159,156 @@
  *                   type: string
  *                   example: Ocurrió un error al intentar eliminar las oportunidades de voluntariado.
  */
+/**
+ * @swagger
+ * /volunteer/{refugioId}/oportunidades:
+ *   post:
+ *     tags:
+ *       - volunteer
+ *     summary: Register a volunteer for a specific opportunity in a refuge
+ *     description: This endpoint allows a user to register as a volunteer for an opportunity in a specified refuge.
+ *     parameters:
+ *       - in: path
+ *         name: refugioId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the refuge where the opportunity exists.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oportunidadId:
+ *                 type: string
+ *                 description: The ID of the volunteering opportunity.
+ *               formData:
+ *                 type: object
+ *                 properties:
+ *                   personalData:
+ *                     type: object
+ *                     properties:
+ *                       fullName:
+ *                         type: string
+ *                         description: Full name of the volunteer.
+ *                       birth:
+ *                         type: string
+ *                         format: date
+ *                         description: Birthdate of the volunteer.
+ *                       gender:
+ *                         type: string
+ *                         description: Gender of the volunteer.
+ *                       address:
+ *                         type: string
+ *                         description: Address of the volunteer.
+ *                       contactTel:
+ *                         type: string
+ *                         description: Contact phone number.
+ *                       email:
+ *                         type: string
+ *                         format: email
+ *                         description: Email address of the volunteer.
+ *                   availability:
+ *                     type: object
+ *                     properties:
+ *                       availableDays:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: Days the volunteer is available.
+ *                       availableHours:
+ *                         type: integer
+ *                         description: Number of hours available.
+ *                       frecuency:
+ *                         type: string
+ *                         description: Frequency of availability.
+ *                   experienceAndSkills:
+ *                     type: object
+ *                     properties:
+ *                       experience:
+ *                         type: string
+ *                         description: Previous volunteering or related experience.
+ *                       preferenceArea:
+ *                         type: string
+ *                         description: Preferred area of volunteering.
+ *                       knowledge:
+ *                         type: string
+ *                         description: Additional relevant knowledge.
+ *                   motivation:
+ *                     type: object
+ *                     properties:
+ *                       volunteer:
+ *                         type: string
+ *                         description: Motivation for volunteering.
+ *                       learn:
+ *                         type: string
+ *                         description: Expected learning outcomes.
+ *                   rolePreferences:
+ *                     type: object
+ *                     properties:
+ *                       role:
+ *                         type: string
+ *                         description: Desired role in volunteering.
+ *                       individualTeam:
+ *                         type: string
+ *                         description: Preference for individual or team work.
+ *                   healthConditions:
+ *                     type: object
+ *                     properties:
+ *                       medicalConditions:
+ *                         type: string
+ *                         description: Any medical conditions the volunteer has.
+ *                       alergics:
+ *                         type: string
+ *                         description: Any allergies the volunteer has.
+ *                   additionalObservations:
+ *                     type: object
+ *                     properties:
+ *                       adicionalInfo:
+ *                         type: string
+ *                         description: Additional observations or notes.
+ *                   selectedVolunteering:
+ *                     type: object
+ *                     properties:
+ *                       volunteeringId:
+ *                         type: string
+ *                         description: ID of the volunteering program.
+ *                       volunteeringName:
+ *                         type: string
+ *                         description: Name of the volunteering program.
+ *                       volunteeringDescription:
+ *                         type: string
+ *                         description: Description of the volunteering program.
+ *     responses:
+ *       200:
+ *         description: Successful registration response.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Inscripción exitosa. Se ha enviado un correo de confirmación."
+ *                 refugio:
+ *                   type: string
+ *                   description: The name of the refuge.
+ *                 oportunidad:
+ *                   type: string
+ *                   description: The description of the volunteering opportunity.
+ *                 detallesEnviados:
+ *                   type: string
+ *                   description: Details of the email sent.
+ *       400:
+ *         description: Bad request.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "User ID is missing"
+ */
