@@ -3,6 +3,9 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+const { FRONTEND_URL } = process.env
+
 export const createSession = async (req: Request, res: Response) => {
   const { title, description, moneyAmount, refugee_id, user_id } = req.body;
   const stripe = new Stripe(process.env.STRIPE!);
@@ -22,8 +25,8 @@ export const createSession = async (req: Request, res: Response) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:5173/donation-success",
-      cancel_url: "http://localhost:5173/donation-cancel",
+      success_url: `${FRONTEND_URL}/donation-success`,
+      cancel_url: `${FRONTEND_URL}/donation-cancel`,
       metadata: {
         refugee_id: refugee_id,
         user_id: req.user?.id || "unknown_user",

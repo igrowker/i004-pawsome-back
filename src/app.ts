@@ -6,6 +6,11 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swaggerConfig";
 import { authenticateToken, authenticateAdminToken } from "./middlewares/authMiddleware";
 import { isPublicRoute } from "./constants/publicRoutes";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { FRONTEND_URL } = process.env
 
 const isAdminRoute = (path: string) => {
   return path.startsWith('/admin'); 
@@ -15,7 +20,7 @@ const app: Express = express();
 app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(cors({
-  origin: '*',  
+  origin: FRONTEND_URL || '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

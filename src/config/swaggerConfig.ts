@@ -1,5 +1,10 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'path';
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { API_BASE_URL } = process.env
 
 const swaggerConfig = {
   definition: {
@@ -64,7 +69,7 @@ const swaggerConfig = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: API_BASE_URL || 'http://localhost:3000', 
       },
     ],
     components: {
