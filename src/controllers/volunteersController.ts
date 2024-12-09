@@ -120,10 +120,10 @@ export const registerVolunteerController = async (req: Request, res: Response) =
     }
 
     const refugioId = req.params.refugioId;
-    const { oportunidadId, mensaje, fecha, horasDisponibles, formData } = req.body;
+    const { oportunidadId, formData } = req.body;
 
     const result = await volunteerService.registerVolunteer(
-      { refugioId, oportunidadId, mensaje, fecha, horasDisponibles, formData },
+      { refugioId, oportunidadId , formData },
       userId
     );
 

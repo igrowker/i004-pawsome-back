@@ -184,16 +184,6 @@
  *               oportunidadId:
  *                 type: string
  *                 description: The ID of the volunteering opportunity.
- *               mensaje:
- *                 type: string
- *                 description: An optional message from the volunteer. If not provided, the value will be taken from formData.additionalMessage.additionalMsg.
- *               fecha:
- *                 type: string
- *                 format: date
- *                 description: The date of registration or intended participation.
- *               horasDisponibles:
- *                 type: integer
- *                 description: Number of hours the volunteer is available for.
  *               formData:
  *                 type: object
  *                 properties:
@@ -282,18 +272,15 @@
  *                   selectedVolunteering:
  *                     type: object
  *                     properties:
+ *                       volunteeringId:
+ *                         type: string
+ *                         description: ID of the volunteering program.
  *                       volunteeringName:
  *                         type: string
  *                         description: Name of the volunteering program.
  *                       volunteeringDescription:
  *                         type: string
  *                         description: Description of the volunteering program.
- *                   additionalMessage:
- *                     type: object
- *                     properties:
- *                       additionalMsg:
- *                         type: string
- *                         description: An optional additional message from the volunteer.
  *     responses:
  *       200:
  *         description: Successful registration response.
