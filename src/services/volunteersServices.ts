@@ -108,6 +108,8 @@ export const registerVolunteer = async (input: VolunteerRegistrationInput, userI
     throw new Error('Usuario no encontrado');
   }
 
+  const mensajeFinal = formData?.additionalMessage?.additionalMsg || mensaje || "Sin mensaje adicional";
+
   const { 
     personalData, 
     availability, 
@@ -162,7 +164,7 @@ Hola ${usuario.name} ${usuario.last_name},
   - Descripción: ${selectedVolunteering.volunteeringDescription || "No especificada"}
 
   **Mensaje adicional:**
-  "${mensaje || "Sin mensaje adicional"}"
+  "${mensajeFinal}"
 
   ¡Gracias por tu interés en ayudar!
   `;
