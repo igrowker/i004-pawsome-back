@@ -3,6 +3,7 @@ import VolunteerOpportunity from '../models/volunteersModel';
 import Refugee, { IRefugee } from '../models/refugeeModel';
 import Usuario from '../models/userModel';
 import mailService from './mailService';
+import juice from 'juice';
 
 export const getVolunteerOpportunities = async () => {
   return VolunteerOpportunity.find().populate('refugee_id', 'name');
@@ -143,170 +144,115 @@ export const registerVolunteer = async (input: VolunteerRegistrationInput, userI
   if (!usuario) {
     throw new Error('Usuario no encontrado');
   }
-
   const mailContent = `
   <html lang="es">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Confirmación de Inscripción</title>
-      <style>
-        body {
-          font-family: 'Arial', sans-serif;
-          background-color: #f4f4f9;
-          color: #333;
-          margin: 0;
-          padding: 0;
-        }
-        .container {
-          width: 100%;
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 20px;
-          background-color: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-          text-align: center;
-          color: #ff7f50;
-        }
-        .header h1 {
-          font-size: 40px;
-          margin: 0;
-          font-weight: bold;
-        }
-        .pawsome {
-          font-size: 50px;
-          color: #ff7f50;
-          font-family: 'Arial', sans-serif;
-          font-weight: bold;
-          text-align: center;
-          text-transform: uppercase;
-          margin-top: 30px;
-        }
-        .body-text {
-          font-size: 16px;
-          line-height: 1.5;
-          color: #333;
-          margin-top: 20px;
-        }
-        .body-text b {
-          color: #ff7f50;
-        }
-        .footer {
-          text-align: center;
-          margin-top: 40px;
-          font-size: 14px;
-          color: #888;
-        }
-        .button {
-          display: inline-block;
-          padding: 10px 20px;
-          background-color: #ff7f50;
-          color: #fff;
-          text-decoration: none;
-          border-radius: 5px;
-          font-weight: bold;
-          margin-top: 20px;
-          text-align: center;
-        }
-        .button:hover {
-          background-color: #ff5733;
-        }
-      </style>
-    </head>
-    <body>
-
-      <div class="container">
-        <div class="header">
-          <h1>Confirmación de Inscripción</h1>
-        </div>
-
-        <div class="pawsome">
-          PAWSOME!
-        </div>
-
-        <div class="body-text">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Inscripción</title>
+  </head>
+  <body style="font-family: Arial, sans-serif; background-color: #6AB4A8; color: #333; margin: 0; padding: 0;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <tr>
+        <td style="text-align: center; color: #08121F; padding-bottom: 20px;">
+          <h1 style="font-size: 40px; margin: 0; font-weight: bold;">Confirmación de Inscripción</h1>
+          <div style="font-size: 50px; color: #08121F; font-weight: bold; text-transform: uppercase; margin-top: 30px;">PAWSOME!</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 16px; line-height: 1.5; color: #333;">
           <p>Hola <b>${usuario.name} ${usuario.last_name}</b>,</p>
 
           <p>Gracias por inscribirte a la oportunidad de voluntariado "<b>${detalleOportunidad.description}</b>" en el refugio "<b>${refugio.name_refugee}</b>". Aquí están los detalles de tu inscripción:</p>
 
-          <h3>**Información Personal:**</h3>
-          <ul>
-            <li><b>Nombre completo:</b> ${formData.personalData.fullName || `${usuario.name} ${usuario.last_name}`}</li>
-            <li><b>Fecha de nacimiento:</b> ${formData.personalData.birth || "No especificada"}</li>
-            <li><b>Género:</b> ${formData.personalData.gender || "No especificado"}</li>
-            <li><b>Dirección:</b> ${formData.personalData.address || "No especificada"}</li>
-            <li><b>Teléfono de contacto:</b> ${formData.personalData.contactTel || "No especificado"}</li>
-          </ul>
+          <div style="background-color: #08121F; padding: 20px; border-radius: 8px; color: white; text-align: left;">
+            <p style="font-size: 20px; font-weight: bold; text-align: center; margin: 0; padding-bottom: 15px;">Detalles de tu Inscripción</p>
+            <table style="width: 100%; font-size: 14px; color: #fff; margin-bottom: 10px;">
+              <tr><td><b>Nombre completo:</b></td><td>${formData.personalData.fullName || `${usuario.name} ${usuario.last_name}`}</td></tr>
+              <tr><td><b>Fecha de nacimiento:</b></td><td>${formData.personalData.birth || "No especificada"}</td></tr>
+              <tr><td><b>Género:</b></td><td>${formData.personalData.gender || "No especificado"}</td></tr>
+              <tr><td><b>Dirección:</b></td><td>${formData.personalData.address || "No especificada"}</td></tr>
+              <tr><td><b>Teléfono de contacto:</b></td><td>${formData.personalData.contactTel || "No especificado"}</td></tr>
+              <tr><td><b>Email:</b></td><td>${formData.personalData.email || usuario.email}</td></tr>
+            </table>
 
-          <h3>**Disponibilidad:**</h3>
-          <ul>
-            <li><b>Días disponibles:</b> ${formData.availability.availableDays || "No especificados"}</li>
-            <li><b>Horas disponibles:</b> ${formData.availability.availableHours}</li>
-            <li><b>Frecuencia:</b> ${formData.availability.frecuency || "No especificada"}</li>
-          </ul>
+            <div style="font-size: 30px; text-align: center;">
+              🐾🐾🐾🐾🐾
+            </div>
+          </div>
 
-          <h3>**Experiencia y habilidades:**</h3>
-          <ul>
-            <li><b>Experiencia:</b> ${formData.experienceAndSkills.experience || "No especificada"}</li>
-            <li><b>Área de preferencia:</b> ${formData.experienceAndSkills.preferenceArea || "No especificada"}</li>
-            <li><b>Conocimientos adicionales:</b> ${formData.experienceAndSkills.knowledge || "No especificados"}</li>
-          </ul>
+          <div style="font-size: 30px; text-align: center; margin-top: 20px;">
+            🐾🐾🐾🐾🐾
+          </div>
 
-          <h3>**Motivación:**</h3>
-          <ul>
-            <li><b>Razón para ser voluntario:</b> ${formData.motivation.volunteer || "No especificada"}</li>
-            <li><b>Aprendizajes esperados:</b> ${formData.motivation.learn || "No especificado"}</li>
-          </ul>
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Disponibilidad:**</b></td></tr>
+            <tr><td><b>Días disponibles:</b></td><td>${formData.availability.availableDays || "No especificados"}</td></tr>
+            <tr><td><b>Horas disponibles:</b></td><td>${formData.availability.availableHours}</td></tr>
+            <tr><td><b>Frecuencia:</b></td><td>${formData.availability.frecuency || "No especificada"}</td></tr>
+          </table>
 
-          <h3>**Preferencias de rol:**</h3>
-          <ul>
-            <li><b>Rol deseado:</b> ${formData.rolePreferences.role || "No especificado"}</li>
-            <li><b>Trabajo:</b> ${formData.rolePreferences.individualTeam || "No especificado"}</li>
-          </ul>
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Experiencia y habilidades:**</b></td></tr>
+            <tr><td><b>Experiencia:</b></td><td>${formData.experienceAndSkills.experience || "No especificada"}</td></tr>
+            <tr><td><b>Área de preferencia:</b></td><td>${formData.experienceAndSkills.preferenceArea || "No especificada"}</td></tr>
+            <tr><td><b>Conocimientos adicionales:</b></td><td>${formData.experienceAndSkills.knowledge || "No especificados"}</td></tr>
+          </table>
 
-          <h3>**Condiciones médicas:**</h3>
-          <ul>
-            <li><b>Condiciones médicas:</b> ${formData.healthConditions.medicalConditions || "No especificadas"}</li>
-            <li><b>Alergias:</b> ${formData.healthConditions.alergics || "No especificadas"}</li>
-          </ul>
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Motivación:**</b></td></tr>
+            <tr><td><b>Razón para ser voluntario:</b></td><td>${formData.motivation.volunteer || "No especificada"}</td></tr>
+            <tr><td><b>Aprendizajes esperados:</b></td><td>${formData.motivation.learn || "No especificado"}</td></tr>
+          </table>
 
-          <h3>**Información adicional:**</h3>
-          <ul>
-            <li><b>Detalles adicionales:</b> ${formData.additionalObservations.adicionalInfo || "No especificada"}</li>
-          </ul>
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Preferencias de rol:**</b></td></tr>
+            <tr><td><b>Rol deseado:</b></td><td>${formData.rolePreferences.role || "No especificado"}</td></tr>
+            <tr><td><b>Trabajo:</b></td><td>${formData.rolePreferences.individualTeam || "No especificado"}</td></tr>
+          </table>
 
-          <h3>**Detalles del voluntariado seleccionado:**</h3>
-          <ul>
-            <li><b>Nombre:</b> ${formData.selectedVolunteering.volunteeringName || detalleOportunidad.description}</li>
-            <li><b>Descripción:</b> ${formData.selectedVolunteering.volunteeringDescription || "No especificada"}</li>
-          </ul>
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Condiciones médicas:**</b></td></tr>
+            <tr><td><b>Condiciones médicas:</b></td><td>${formData.healthConditions.medicalConditions || "No especificadas"}</td></tr>
+            <tr><td><b>Alergias:</b></td><td>${formData.healthConditions.alergics || "No especificadas"}</td></tr>
+          </table>
+
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Información adicional:**</b></td></tr>
+            <tr><td><b>Detalles adicionales:</b></td><td>${formData.additionalObservations.adicionalInfo || "No especificada"}</td></tr>
+          </table>
+
+          <table width="100%" cellspacing="0" cellpadding="5" style="border-top: 2px solid #08121F;">
+            <tr><td colspan="2" style="color: #08121F; font-size: 18px;"><b>**Detalles del voluntariado seleccionado:**</b></td></tr>
+            <tr><td><b>Nombre:</b></td><td>${formData.selectedVolunteering.volunteeringName || detalleOportunidad.description}</td></tr>
+            <tr><td><b>Descripción:</b></td><td>${formData.selectedVolunteering.volunteeringDescription || "No especificada"}</td></tr>
+          </table>
 
           <p>¡Gracias por tu interés en ayudar!</p>
 
-          <div class="footer">
+          <div style="text-align: center; margin-top: 40px; font-size: 14px; color: #888;">
             <p>¡El equipo de ${refugio.name_refugee}!</p>
           </div>
-        </div>
-      </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
 
-    </body>
-  </html>
-`;
+  `;
 
-
+  const inlinedHtml = juice(mailContent);
+  
   await mailService.sendEmail({
     to: usuario.email,
     subject: `Confirmación de inscripción: ${detalleOportunidad.description}`,
-    text: mailContent
+    html: inlinedHtml
   });
 
   return {
     message: 'Inscripción exitosa. Se ha enviado un correo de confirmación.',
     refugio: refugio.name_refugee,
     oportunidad: detalleOportunidad.description,
-    detallesEnviados: mailContent
+    detallesEnviados: inlinedHtml
   };
 };
