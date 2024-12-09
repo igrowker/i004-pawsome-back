@@ -243,11 +243,17 @@ export const registerVolunteer = async (input: VolunteerRegistrationInput, userI
 
   const inlinedHtml = juice(mailContent);
   
-  await mailService.sendEmail({
-    to: usuario.email,
-    subject: `Confirmación de inscripción: ${detalleOportunidad.description}`,
-    html: inlinedHtml
-  });
+  try {
+    await mailService.sendEmail({
+      to: usuario.email,
+      subject: `Confirmación de inscripción: ${detalleOportunidad.description}`,
+      html: inlinedHtml
+    });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new Error('Failed to send email');
+  }
+  
   
 
   return {
